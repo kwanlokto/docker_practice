@@ -34,11 +34,6 @@ def create_app():
     with app.app_context():
         from server.routes import account, user  # NOQA: F401
 
-        @app.route("/")
-        def hello():
-            count = get_hit_count()
-            return "Hello World! I have been seen {} times.\n".format(count)
-
         @app.route("/ping", methods=["GET"])
         def ping():
             return (
