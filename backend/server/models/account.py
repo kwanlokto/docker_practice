@@ -3,7 +3,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 
 class Account(db.Model):
-    username = db.Column(db.String(80), primary_key=True, unique=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     password_hash = db.Column(db.String(128))
 
@@ -14,4 +15,7 @@ class Account(db.Model):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return "<Account %r>" % self.username
+        return f"<Account {self.username}>"
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
