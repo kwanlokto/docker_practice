@@ -1,7 +1,7 @@
 """Initial Migration
 
 Revision ID: bc38ef47ec13
-Revises: 
+Revises:
 Create Date: 2021-04-16 16:55:53.587323
 
 """

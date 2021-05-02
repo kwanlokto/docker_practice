@@ -23,7 +23,7 @@ def create_app():
     db.init_app(app)
 
     manager = Manager(app)
-    migrate = Migrate(app, db)
+    migrate = Migrate(app, db)  # NOQA: F841
 
     manager.add_command("db", MigrateCommand)
     manager.add_command(
