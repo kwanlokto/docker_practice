@@ -35,7 +35,7 @@ def create_app():
     )
 
     with app.app_context():
-        from server.routes import account, user  # NOQA: F401
+        from server.routes import account, user, transaction  # NOQA: F401
 
         @app.route("/ping", methods=["GET"])
         def ping():

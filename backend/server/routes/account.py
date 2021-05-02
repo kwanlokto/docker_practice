@@ -1,5 +1,3 @@
-import json
-
 from flask import current_app as app
 from flask import jsonify, request
 
@@ -12,7 +10,7 @@ from server.models.user import User
 def account(user_id):
     if request.method == "GET":
         # get all accounts for the user
-        accounts = User.query.filter_by(id=user_id).join(Account).all()
+        accounts = Account.query.join(User).filter_by(id=user_id).all()
         return (
             jsonify(
                 isError=False,
