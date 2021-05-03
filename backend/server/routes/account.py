@@ -1,5 +1,3 @@
-import json
-
 from flask import current_app as app
 from flask import jsonify, request
 
@@ -8,21 +6,23 @@ from server.models.account import Account
 from server.models.user import User
 
 
-@app.route("/user/<string:uid>/account", methods=["GET", "POST"])
+@app.route("/user/<string:user_id>/account", methods=["GET", "POST"])
 def account(user_id):
     if request.method == "GET":
-        accounts = User.query.filter_by(id=user_id).join(Account)
+        # get all accounts for the user
+        accounts = Account.query.join(User).filter_by(id=user_id).all()
         return (
             jsonify(
                 isError=False,
                 message="Success",
                 statusCode=200,
-                data=json.dumps(accounts),
+                data=[account.as_dict() for account in accounts],
             ),
             200,
         )
 
     elif request.method == "POST":
+        # add a new account for the user
         try:
             username = request.form["username"]
             password = request.form["password"]
@@ -44,7 +44,7 @@ def account(user_id):
         return (
             jsonify(
                 isError=False,
-                message="Added new user to db",
+                message="Added new account to db",
                 statusCode=200,
             ),
             200,

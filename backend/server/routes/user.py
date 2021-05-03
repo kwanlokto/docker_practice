@@ -7,7 +7,9 @@ from server.models.user import User
 
 @app.route("/user", methods=["POST"])
 def user():
-    print("entered")
+    """
+    Create a new user
+    """
     try:
         first_name = request.form.get("first_name")
         last_name = request.form.get("last_name")
