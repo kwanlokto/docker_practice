@@ -7,6 +7,7 @@ class Account(db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     password_hash = db.Column(db.String(128))
+    access_token = db.Column(db.String(10))
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

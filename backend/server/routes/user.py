@@ -6,7 +6,7 @@ from server.models.user import User
 
 
 @app.route("/signup", methods=["POST"])
-def signup():
+def userSignup():
     """
     Create a new user
     """
@@ -41,7 +41,7 @@ def signup():
 
 
 @app.route("/login", methods=["POST"])
-def login():
+def userLogin():
     try:
         email = request.form.get("email")
 
