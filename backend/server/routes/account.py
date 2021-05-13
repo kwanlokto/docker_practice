@@ -30,6 +30,10 @@ def account(user_id):
             username = request_data["username"]
             password = request_data["password"]
 
+            new_account = Account(username=username, user_id=user_id)
+            new_account.set_password(password)
+            db.session.add(new_account)
+            db.session.commit()
         except KeyError:
             return (
                 jsonify(
@@ -39,10 +43,8 @@ def account(user_id):
                 ),
                 400,
             )
-        new_account = Account(username=username, user_id=user_id)
-        new_account.set_password(password)
-        db.session.add(new_account)
-        db.session.commit()
+        except Exception as err:
+            return (jsonify(isError=True, message=str(err), statusCode=409), 409)
 
         return (
             jsonify(
@@ -77,11 +79,11 @@ def accountToken(user_id):
                 ),
                 400,
             )
-        except Exception as e:
+        except Exception as err:
             return (
                 jsonify(
                     isError=True,
-                    message=f"Missing Account from DB. {e}",
+                    message=f"Missing Account from DB. {err}",
                     statusCode=401,
                 ),
                 401,
@@ -123,11 +125,11 @@ def accountToken(user_id):
                 ),
                 400,
             )
-        except Exception as e:
+        except Exception as err:
             return (
                 jsonify(
                     isError=True,
-                    message=f"Missing Account from DB. {e}",
+                    message=f"Missing Account from DB. {err}",
                     statusCode=401,
                 ),
                 401,

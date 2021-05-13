@@ -15,6 +15,9 @@ def userSignup():
         last_name = request_data["last_name"]
         email = request_data["email"]
 
+        new_user = User(first_name=first_name, last_name=last_name, email=email)
+        db.session.add(new_user)
+        db.session.commit()
     except KeyError as err:
         msg = f"Failed to create user. ${err}"
         return (
@@ -25,10 +28,15 @@ def userSignup():
             ),
             400,
         )
-
-    new_user = User(first_name=first_name, last_name=last_name, email=email)
-    db.session.add(new_user)
-    db.session.commit()
+    except Exception as err:
+        return (
+            jsonify(
+                isError=True,
+                message=str(err),
+                statusCode=409,
+            ),
+            409,
+        )
 
     return (
         jsonify(
@@ -57,11 +65,11 @@ def userLogin():
             ),
             400,
         )
-    except Exception as e:
+    except Exception as err:
         return (
             jsonify(
                 isError=True,
-                message=f"Missing User from DB. {e}",
+                message=f"Missing User from DB. {err}",
                 statusCode=401,
             ),
             401,
