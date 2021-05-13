@@ -14,6 +14,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { userLogin } from "../data-handler/auth"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,9 +38,14 @@ const useStyles = makeStyles((theme) => ({
 
 export const Login = () => {
   const classes = useStyles();
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("")
   
+  const login = async () => {
+    const res = userLogin(email)
+    if (res.success) {
+      localStorage.setItem("user.token", res.data.id)
+    }
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -56,42 +62,30 @@ export const Login = () => {
             margin="normal"
             required
             fullWidth
-            id="username"
-            label="Username"
-            name="username"
+            id="email"
+            label="Email"
+            name="email"
             autoFocus
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
+            value={email}
+            onChange={e => setEmail(e.target.value)}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={login}
           >
             Sign In
           </Button>
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
-                Forgot password?
+                Forgot email?
               </Link>
             </Grid>
             <Grid item>

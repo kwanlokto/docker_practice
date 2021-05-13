@@ -1,16 +1,13 @@
-const API = process.env.BACKEND_URI
+import axios from 'axios'
+
+const API = "http://localhost:5000"
 
 /* Functions for Accounts */
 export const getAllAccounts = async () => {
     const user = localStorage.getItem('user.token')
 
-    return fetch(`${API}/user/${user.id}/account`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        }
-    }).then(res => {
-        return res.json()
+    return axios.get(`${API}/user/${user.id}/account`).then(res => {
+        return res.data
     }).catch(() => {
         console.error("bad connection")
     })
@@ -19,17 +16,11 @@ export const getAllAccounts = async () => {
 export const createNewAccount = async (username, password) => {
     const user = localStorage.getItem('user.token')
 
-    return fetch(`${API}/user/${user.id}/account`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: {
-            username: username,
-            password: password
-        }
+    return axios.post(`${API}/user/${user.id}/account`, {
+        username: username,
+        password: password,
     }).then(res => {
-        return res.json()
+        return res.data
     }).catch(() => {
         console.error("bad connection")
     })
@@ -38,17 +29,11 @@ export const createNewAccount = async (username, password) => {
 export const accountLogin = async (username, password) => {
     const user = localStorage.getItem('user.token')
 
-    return fetch(`${API}/user/${user.id}/account/login`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: {
-            username: username,
-            password: password
-        }
+    return axios.post(`${API}/user/${user.id}/account/login`, {
+        username: username,
+        password: password,
     }).then(res => {
-        return res.json()
+        return res.data
     }).catch(() => {
         console.error("bad connection")
     })
@@ -56,34 +41,20 @@ export const accountLogin = async (username, password) => {
 
 /* Functions for User */
 export const userLogin = async (email) => {
-    return fetch(`${API}/user/login`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: {
-            email: email,
-        }
-    }).then(res => {
-        return res.json()
+    axios.post(`${API}/user/login`, { email }).then(res => {
+        return res.data
     }).catch(() => {
         console.error("bad connection")
     })
 }
 
 export const userSignup = async (email, firstName, lastName) => {
-    fetch(`${API}/user/signup`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: {
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-        }
+    return axios.post(`${API}/user/signup`, {
+        first_name: firstName,
+        last_name: lastName,
+        email: email
     }).then(res => {
-        return res.json()
+        return res.data
     }).catch(() => {
         console.error("bad connection")
     })
