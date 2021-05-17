@@ -1,20 +1,23 @@
 from flask import current_app as app
 from flask import jsonify, request
-
 from server import db
 from server.models.user import User
 
 
-@app.route("/signup", methods=["POST"])
+@app.route("/user/signup", methods=["POST"])
 def userSignup():
     """
     Create a new user
     """
     try:
-        first_name = request.form.get("first_name")
-        last_name = request.form.get("last_name")
-        email = request.form.get("email")
+        request_data = request.get_json()
+        first_name = request_data["first_name"]
+        last_name = request_data["last_name"]
+        email = request_data["email"]
 
+        new_user = User(first_name=first_name, last_name=last_name, email=email)
+        db.session.add(new_user)
+        db.session.commit()
     except KeyError as err:
         msg = f"Failed to create user. ${err}"
         return (
@@ -25,10 +28,15 @@ def userSignup():
             ),
             400,
         )
-
-    new_user = User(first_name=first_name, last_name=last_name, email=email)
-    db.session.add(new_user)
-    db.session.commit()
+    except Exception as err:
+        return (
+            jsonify(
+                isError=True,
+                message=str(err),
+                statusCode=409,
+            ),
+            409,
+        )
 
     return (
         jsonify(
@@ -40,10 +48,12 @@ def userSignup():
     )
 
 
-@app.route("/login", methods=["POST"])
+@app.route("/user/login", methods=["POST"])
 def userLogin():
     try:
-        email = request.form.get("email")
+        request_data = request.get_json()
+        email = request_data["email"]
+        user = User.query.filter_by(email=email).one()
 
     except KeyError as err:
         msg = f"Failed to get user. ${err}"
@@ -55,7 +65,15 @@ def userLogin():
             ),
             400,
         )
-    user = User.query.filter_by(email=email).one()
+    except Exception as err:
+        return (
+            jsonify(
+                isError=True,
+                message=f"Missing User from DB. {err}",
+                statusCode=401,
+            ),
+            401,
+        )
     return (
         jsonify(
             isError=False,

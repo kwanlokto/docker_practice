@@ -26,9 +26,14 @@ def account(user_id):
     elif request.method == "POST":
         # add a new account for the user
         try:
-            username = request.form["username"]
-            password = request.form["password"]
+            request_data = request.get_json()
+            username = request_data["username"]
+            password = request_data["password"]
 
+            new_account = Account(username=username, user_id=user_id)
+            new_account.set_password(password)
+            db.session.add(new_account)
+            db.session.commit()
         except KeyError:
             return (
                 jsonify(
@@ -38,10 +43,8 @@ def account(user_id):
                 ),
                 400,
             )
-        new_account = Account(username=username, user_id=user_id)
-        new_account.set_password(password)
-        db.session.add(new_account)
-        db.session.commit()
+        except Exception as err:
+            return (jsonify(isError=True, message=str(err), statusCode=409), 409)
 
         return (
             jsonify(
@@ -55,11 +58,18 @@ def account(user_id):
 
 @app.route("/user/<string:user_id>/account/token", methods=["GET", "PUT"])
 def accountToken(user_id):
+    request_data = request.get_json()
     if request.method == "GET":
         try:
-            username = request.form["username"]
-            password = request.form["password"]
-
+            username = request_data["username"]
+            password = request_data["password"]
+            # get all accounts for the user
+            account = (
+                Account.query.filter_by(username=username)
+                .join(User)
+                .filter_by(id=user_id)
+                .one()
+            )
         except KeyError:
             return (
                 jsonify(
@@ -69,13 +79,15 @@ def accountToken(user_id):
                 ),
                 400,
             )
-        # get all accounts for the user
-        account = (
-            Account.query.filter_by(username=username)
-            .join(User)
-            .filter_by(id=user_id)
-            .one()
-        )
+        except Exception as err:
+            return (
+                jsonify(
+                    isError=True,
+                    message=f"Missing Account from DB. {err}",
+                    statusCode=401,
+                ),
+                401,
+            )
         if account.check_password(password):
             return (
                 jsonify(
@@ -96,9 +108,14 @@ def accountToken(user_id):
         )
     elif request.method == "PUT":
         try:
-            username = request.form["username"]
-            password = request.form["password"]
-
+            username = request_data["username"]
+            password = request_data["password"]
+            account = (
+                Account.query.filter_by(username=username)
+                .join(User)
+                .filter_by(id=user_id)
+                .one()
+            )
         except KeyError:
             return (
                 jsonify(
@@ -108,13 +125,15 @@ def accountToken(user_id):
                 ),
                 400,
             )
-
-        account = (
-            Account.query.filter_by(username=username)
-            .join(User)
-            .filter_by(id=user_id)
-            .one()
-        )
+        except Exception as err:
+            return (
+                jsonify(
+                    isError=True,
+                    message=f"Missing Account from DB. {err}",
+                    statusCode=401,
+                ),
+                401,
+            )
 
         if account.check_password(password):
             letters = string.ascii_letters  # new access token

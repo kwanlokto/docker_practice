@@ -15,6 +15,7 @@ flask-testing = "*"
 flask-migrate = "*"
 flask-script = "*"
 mysql-connector-python = "*"
+flask-cors = "*"
 
 [requires]
 python_version = "3.7"

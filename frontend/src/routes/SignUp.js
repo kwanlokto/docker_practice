@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -9,10 +11,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
 import { Link } from 'react-router-dom';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { userSignup } from "../data-handler/auth"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,6 +39,16 @@ const useStyles = makeStyles((theme) => ({
 export const SignUp = () => {
   const classes = useStyles();
 
+  const [email, setEmail] = useState("")
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+
+  const signUp = async () => {
+    const res = userSignup(email, firstName, lastName)
+    if (res.success) {
+      localStorage.setItem("user.token", res.data.id)
+    }
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -58,6 +70,8 @@ export const SignUp = () => {
                 fullWidth
                 id="firstName"
                 label="First Name"
+                value={firstName}
+                onChange={e => setFirstName(e.target.value)}
                 autoFocus
               />
             </Grid>
@@ -70,6 +84,8 @@ export const SignUp = () => {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                value={lastName}
+                onChange={e => setLastName(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -77,22 +93,12 @@ export const SignUp = () => {
                 variant="outlined"
                 required
                 fullWidth
-                id="username"
-                label="Username"
-                name="username"
-                autoComplete="username"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
+                id="email"
+                label="Email"
+                name="email"
+                autoComplete="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -103,11 +109,11 @@ export const SignUp = () => {
             </Grid>
           </Grid>
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={signUp}
           >
             Sign Up
           </Button>

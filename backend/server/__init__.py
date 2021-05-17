@@ -1,6 +1,7 @@
 import os
-
+import logging
 from flask import Flask, jsonify
+from flask_cors import CORS
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager, Server
 from flask_sqlalchemy import SQLAlchemy
@@ -10,6 +11,8 @@ db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
+    CORS(app, resources=r"/*")
+
     DATABASE_URI = (
         "mysql+mysqlconnector://{user}:{password}@{server}/{database}".format(
             user=os.environ["DB_USER"],
@@ -35,7 +38,7 @@ def create_app():
     )
 
     with app.app_context():
-        from server.routes import account, user, transaction  # NOQA: F401
+        from server.routes import account, transaction, user  # NOQA: F401
 
         @app.route("/ping", methods=["GET"])
         def ping():
@@ -47,5 +50,10 @@ def create_app():
                 ),
                 200,
             )
+
+        @app.errorhandler(500)
+        def server_error(e):
+            logging.exception("An error occurred during a request. %s", e)
+            return "An internal error occured", 500
 
         return manager

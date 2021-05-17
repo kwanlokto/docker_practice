@@ -1,10 +1,9 @@
 from flask import current_app as app
 from flask import jsonify, request
-
 from server import db
 from server.models.account import Account
-from server.models.user import User
 from server.models.transaction import Transaction
+from server.models.user import User
 
 
 @app.route(
@@ -34,9 +33,14 @@ def transaction(user_id, account_id):
     elif request.method == "POST":
         # add a new transaction for the account
         try:
-            operation = request.form["operation"]
-            value = request.form["value"]
-
+            request_data = request.get_json()
+            operation = request_data["operation"]
+            value = request_data["value"]
+            new_transaction = Transaction(
+                account_id=account_id, operation=operation, value=value
+            )
+            db.session.add(new_transaction)
+            db.session.commit()
         except KeyError:
             return (
                 jsonify(
@@ -46,11 +50,15 @@ def transaction(user_id, account_id):
                 ),
                 400,
             )
-        new_transaction = Transaction(
-            account_id=account_id, operation=operation, value=value
-        )
-        db.session.add(new_transaction)
-        db.session.commit()
+        except Exception as err:
+            return (
+                jsonify(
+                    isError=True,
+                    message=str(err),
+                    statusCode=409,
+                ),
+                409,
+            )
 
         return (
             jsonify(
