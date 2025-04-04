@@ -1,0 +1,10 @@
+flask==1.1.2
+flask-sqlalchemy==2.5.1
+flask-testing
+flask-migrate
+flask-script
+mysql-connector-python
+flask-cors
+flake8
+autopep8
+black
