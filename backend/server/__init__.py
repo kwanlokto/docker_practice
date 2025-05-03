@@ -3,13 +3,12 @@ import logging
 from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
 from flask.cli import with_appcontext
 import click
 from server.routes import register_routes
+from server.models import db
 
 # Initialize database
-db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)

@@ -2,7 +2,7 @@ import random
 import string
 
 from flask import jsonify, request, Blueprint
-from server import db
+from server.models import db
 from server.models.account import Account
 from server.models.user import User
 
@@ -58,7 +58,7 @@ def create_account():
 
 
 @account_bp.route("/user/<string:user_id>/account/token", methods=["GET"])
-def account_token(user_id):
+def get_account_token(user_id):
     request_data = request.get_json()
     try:
         username = request_data["username"]
@@ -108,7 +108,7 @@ def account_token(user_id):
     )
 
 @account_bp.route("/user/<string:user_id>/account/token", methods=[ "PUT"])
-def account_token(user_id):
+def update_account_token(user_id):
     request_data = request.get_json()
 
     try:

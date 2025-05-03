@@ -1,4 +1,4 @@
-from server import db
+from server.models import db
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
