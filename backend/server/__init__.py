@@ -6,7 +6,9 @@ from flask_migrate import Migrate
 from flask.cli import with_appcontext
 import click
 from server.routes import register_routes
+from flask_jwt_extended import JWTManager
 from server.models import db
+from datetime import timedelta
 
 # Initialize database
 
@@ -28,6 +30,10 @@ def create_app():
     # Initialize extensions
     db.init_app(app)
     migrate = Migrate(app, db)
+    app.config["JWT_SECRET_KEY"] = "your_secret_key"  # Change this to a more secure key
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)  # Set expiration time for access token
+
+    jwt = JWTManager(app)
 
     # Register CLI commands
     @app.cli.command("db_create")

@@ -8,3 +8,4 @@ flask-cors
 flake8
 autopep8
 black
+Flask-JWT-Extended
