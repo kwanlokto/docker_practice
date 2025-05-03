@@ -1,29 +1,29 @@
 import random
 import string
 
-from flask import current_app as app
-from flask import jsonify, request
+from flask import jsonify, request, Blueprint
 from server import db
 from server.models.account import Account
 from server.models.user import User
 
+account_bp = Blueprint('account', __name__)
 
-@app.route("/user/<string:user_id>", methods=["GET"])
+
+@account_bp.route("/user/<string:user_id>/account", methods=["GET"])
 def account(user_id):
-    if request.method == "GET":
-        # get all accounts for the user
-        accounts = Account.query.join(User).filter_by(id=user_id).all()
-        return (
-            jsonify(
-                isError=False,
-                message="Success",
-                statusCode=200,
-                data=[account.as_dict() for account in accounts],
-            ),
-            200,
-        )
+    # get all accounts for the user
+    accounts = Account.query.join(User).filter_by(id=user_id).all()
+    return (
+        jsonify(
+            isError=False,
+            message="Success",
+            statusCode=200,
+            data=[account.as_dict() for account in accounts],
+        ),
+        200,
+    )
 
-@app.route("/user", methods=["POST"])
+@account_bp.route("/user/<string:user_id>/account", methods=["POST"])
 def create_account():
     # add a new account for the user
     try:
@@ -57,7 +57,7 @@ def create_account():
     )
 
 
-@app.route("/user/<string:user_id>/account", methods=["GET"])
+@account_bp.route("/user/<string:user_id>/account/token", methods=["GET"])
 def account_token(user_id):
     request_data = request.get_json()
     try:
@@ -107,7 +107,7 @@ def account_token(user_id):
         400,
     )
 
-@app.route("/user/<string:user_id>/account/token", methods=[ "PUT"])
+@account_bp.route("/user/<string:user_id>/account/token", methods=[ "PUT"])
 def account_token(user_id):
     request_data = request.get_json()
 

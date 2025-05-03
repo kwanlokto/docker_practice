@@ -1,10 +1,10 @@
-from flask import current_app as app
-from flask import jsonify, request
+from flask import jsonify, request, Blueprint
 from server import db
 from server.models.user import User
+user_bp = Blueprint('user', __name__)
 
 
-@app.route("/user/signup", methods=["POST"])
+@user_bp.route("/user/signup", methods=["POST"])
 def user_signup():
     """
     Create a new user
@@ -48,7 +48,7 @@ def user_signup():
     )
 
 
-@app.route("/user/login", methods=["POST"])
+@user_bp.route("/user/login", methods=["POST"])
 def user_login():
     try:
         request_data = request.get_json()

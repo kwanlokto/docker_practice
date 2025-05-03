@@ -1,12 +1,14 @@
-from flask import current_app as app
-from flask import jsonify, request
+from flask import jsonify, request, Blueprint
+
 from server import db
 from server.models.account import Account
 from server.models.transaction import Transaction
 from server.models.user import User
 
+transaction_bp = Blueprint('products', __name__)
 
-@app.route(
+
+@transaction_bp.route(
     "/user/<string:user_id>/account/<string:account_id>/transaction",
     methods=["GET"],
 )
@@ -29,7 +31,7 @@ def get_transaction(user_id, account_id):
         200,
     )
 
-@app.route(
+@transaction_bp.route(
     "/user/<string:user_id>/account/<string:account_id>/transaction",
     methods=["POST"],
 )

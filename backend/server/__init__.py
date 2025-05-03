@@ -6,6 +6,7 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask.cli import with_appcontext
 import click
+from server.routes import register_routes
 
 # Initialize database
 db = SQLAlchemy()
@@ -55,7 +56,7 @@ def create_app():
 
     # Routes and error handling
     with app.app_context():
-        from server.routes import account, transaction, user  # Assuming routes are defined here
+        register_routes(app)
 
         @app.route("/ping", methods=["GET"])
         def ping():
