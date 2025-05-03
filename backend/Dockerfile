@@ -1,17 +1,16 @@
 FROM python:3.7
 
-RUN pip install pipenv
-
 WORKDIR /app/backend
 
-# We create the requirements.txt first to leverage Docker cache
-COPY Pipfile /Pipfile
-RUN pipenv lock --keep-outdated --requirements > requirements.txt
+# Copy pre-made requirements.txt
+COPY requirements.txt ./
 
-RUN pip install -r requirements.txt
+# Install dependencies
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
+# Copy the rest of the app code
+COPY . .
 
 EXPOSE 5000
-
-COPY . .
 
 CMD ["python", "app.py", "runserver"]
