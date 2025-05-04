@@ -14,6 +14,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 import { userLogin } from "../data-handler/auth"
 
 const useStyles = makeStyles((theme) => ({
@@ -37,15 +38,29 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Login = () => {
+  const history = useHistory();
   const classes = useStyles();
-  const [email, setEmail] = useState("")
-  
-  const login = async () => {
-    const res = userLogin(email)
-    if (res.success) {
-      localStorage.setItem("user.token", res.data.id)
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = userLogin(email)
+
+      // ✅ Store token in localStorage
+      localStorage.setItem("user.token", res.data.token);
+
+      // ✅ Redirect to a protected route
+      history.push('/dashboard');
+    } catch (err) {
+      console.error(err);
+      setError('Invalid credentials');
     }
-  }
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -56,7 +71,7 @@ export const Login = () => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={handleSubmit} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -69,6 +84,19 @@ export const Login = () => {
             value={email}
             onChange={e => setEmail(e.target.value)}
           />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="password"
+            label="Password"
+            name="password"
+            autoFocus
+            value={password}
+            type="password"
+            onChange={e => setPassword(e.target.value)}
+          />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
@@ -78,7 +106,7 @@ export const Login = () => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={login}
+            type="submit"
           >
             Sign In
           </Button>

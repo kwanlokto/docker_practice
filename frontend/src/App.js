@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
+import { Dashboard } from './routes/Dashboard'; // Example protected page
 import { Login } from './routes/Login';
-import { SignUp } from './routes/SignUp'
+import { ProtectedRoute } from './routes/ProtectedRoute';
+import { SignUp } from './routes/SignUp';
 import axios from 'axios';
 
 const apiUrl = 'http://localhost:5000'; // TODO: use process env
@@ -12,26 +14,21 @@ axios.interceptors.request.use(
     const { origin } = new URL(config.url);
     const allowedOrigins = [apiUrl];
     const token = localStorage.getItem('token');    
-    if (allowedOrigins.includes(origin)) {
+    if (allowedOrigins.includes(origin) && token) {
       config.headers.authorization = `Bearer ${token}`;
     }
     return config;
   },
-  error => {
-    return Promise.reject(error);
-  }
+  error => Promise.reject(error)
 );
 
 export default function App() {
   const storedJwt = localStorage.getItem('token');
   const [jwt, setJwt] = useState(storedJwt || null);
 
-  
   return (
     <Router>
       <div>
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
         <Switch>
           <Route path="/login">
             <Login />
@@ -39,8 +36,12 @@ export default function App() {
           <Route path="/signup">
             <SignUp />
           </Route>
-          <Route path="/">
-          </Route>
+
+          {/* Protected route example */}
+          <ProtectedRoute path="/dashboard" component={Dashboard} />
+
+          {/* Default route */}
+          <ProtectedRoute exact path="/" component={Dashboard} />
         </Switch>
       </div>
     </Router>
