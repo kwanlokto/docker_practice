@@ -62,7 +62,7 @@ def custom_route(rule, **options):
     """
 
     def decorator(function_reference):
-        @webserver.route(f"/api{rule}", **options)
+        @webserver.route(f"{rule}", **options)
         @wraps(function_reference)
         def wrapper(*args, **kwargs):
             try:

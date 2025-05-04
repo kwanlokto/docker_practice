@@ -20,31 +20,22 @@ def user_signup():
         db.session.commit()
     except KeyError as err:
         msg = f"Failed to create user. ${err}"
-        return (
-            jsonify(
-                isError=True,
-                message=msg,
-                statusCode=400,
-            ),
-            400,
+        return jsonify(
+            isError=True,
+            message=msg,
+            statusCode=400,
         )
     except Exception as err:
-        return (
-            jsonify(
-                isError=True,
-                message=str(err),
-                statusCode=409,
-            ),
-            409,
+        return jsonify(
+            isError=True,
+            message=str(err),
+            statusCode=409,
         )
 
-    return (
-        jsonify(
-            isError=False,
-            message="Added new user to db",
-            statusCode=200,
-        ),
-        200,
+    return jsonify(
+        isError=False,
+        message="Added new user to db",
+        statusCode=200,
     )
 
 
@@ -57,29 +48,20 @@ def user_login():
 
     except KeyError as err:
         msg = f"Failed to get user. ${err}"
-        return (
-            jsonify(
-                isError=True,
-                message=msg,
-                statusCode=400,
-            ),
-            400,
+        return jsonify(
+            isError=True,
+            message=msg,
+            statusCode=400,
         )
     except Exception as err:
-        return (
-            jsonify(
-                isError=True,
-                message=f"Missing User from DB. {err}",
-                statusCode=401,
-            ),
-            401,
+        return jsonify(
+            isError=True,
+            message=f"Missing User from DB. {err}",
+            statusCode=401,
         )
-    return (
-        jsonify(
-            isError=False,
-            message="Success",
-            statusCode=200,
-            data=user.as_dict(),
-        ),
-        200,
+    return jsonify(
+        isError=False,
+        message="Success",
+        statusCode=200,
+        data=user.as_dict(),
     )

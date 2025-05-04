@@ -27,14 +27,11 @@ def get_transaction(user_id, account_id):
         .filter_by(id=user_id)
         .all()
     )
-    return (
-        jsonify(
-            isError=False,
-            message="Success",
-            statusCode=200,
-            data=[transaction.as_dict() for transaction in transactions],
-        ),
-        200,
+    return jsonify(
+        isError=False,
+        message="Success",
+        statusCode=200,
+        data=[transaction.as_dict() for transaction in transactions],
     )
 
 @custom_route(
@@ -81,14 +78,14 @@ def create_transaction(user_id, account_id):
             "isError": True,
             "message": "Missing required field",
             "statusCode": 400,
-        }), 400
+        })
 
     except NoResultFound:
         return jsonify({
             "isError": True,
             "message": "Account not found",
             "statusCode": 404,
-        }), 404
+        })
 
     except Exception as err:
         db.session.rollback()
@@ -96,5 +93,5 @@ def create_transaction(user_id, account_id):
             "isError": True,
             "message": f"Transaction failed: {str(err)}",
             "statusCode": 500,
-        }), 500
+        })
 
