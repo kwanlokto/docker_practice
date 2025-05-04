@@ -1,5 +1,4 @@
 import os
-import logging
 from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_migrate import Migrate
@@ -29,11 +28,12 @@ def create_app():
 
     # Initialize extensions
     db.init_app(app)
-    migrate = Migrate(app, db)
+    Migrate(app, db)
+
     app.config["JWT_SECRET_KEY"] = "your_secret_key"  # Change this to a more secure key
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)  # Set expiration time for access token
 
-    jwt = JWTManager(app)
+    JWTManager(app)
 
     # Register CLI commands
     @app.cli.command("db_create")
