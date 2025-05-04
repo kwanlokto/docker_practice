@@ -1,9 +1,16 @@
-from server.routes.user import user_bp
-from server.routes.transaction import transaction_bp
-from server.routes.account import account_bp
+from server.routes.user import *
+from server.routes.transaction import *
+from server.routes.account import *
+from server.routes.server import custom_server
+from flask import jsonify
 
-
-def register_routes(app):
-    app.register_blueprint(user_bp, url_prefix='/api')
-    app.register_blueprint(transaction_bp, url_prefix='/api')
-    app.register_blueprint(account_bp, url_prefix='/api')
+@custom_route("/ping", methods=["GET"])
+def ping():
+    return (
+        jsonify(
+            isError=False,
+            message="Success",
+            statusCode=200,
+        ),
+        200,
+    )

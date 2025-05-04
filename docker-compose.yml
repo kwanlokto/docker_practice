@@ -22,6 +22,7 @@ services:
       - CHOKIDAR_USEPOLLING=true
   backend:
     container_name: backend
+    platform: linux
     build:
         context: ./backend
         dockerfile: Dockerfile
@@ -29,6 +30,9 @@ services:
       - .:/app
     ports:
       - 5000:5000
+    environment:
+      - GUNICORN_CMD_ARGS=-w 4 --threads 4 --worker-class=gthread -b 0.0.0.0:${FLASK_RUN_PORT}
+      - RUNNING_IN_DOCKER=DO-NOT-CHANGE  # The value of this env variable does nothing
     env_file:
       - ./backend/env/local.env
   

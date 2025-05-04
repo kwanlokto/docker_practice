@@ -5,11 +5,11 @@ from flask import jsonify, request, Blueprint
 from server.models import db
 from server.models.account import Account
 from server.models.user import User
+from server.routes.server import custom_route
 
-account_bp = Blueprint('account', __name__)
 
 
-@account_bp.route("/user/<string:user_id>/account", methods=["GET"])
+@custom_route("/user/<string:user_id>/account", methods=["GET"])
 def account(user_id):
     # get all accounts for the user
     accounts = Account.query.join(User).filter_by(id=user_id).all()
@@ -23,7 +23,7 @@ def account(user_id):
         200,
     )
 
-@account_bp.route("/user/<string:user_id>/account", methods=["POST"])
+@custom_route("/user/<string:user_id>/account", methods=["POST"])
 def create_account():
     # add a new account for the user
     try:
@@ -57,7 +57,7 @@ def create_account():
     )
 
 
-@account_bp.route("/user/<string:user_id>/account/token", methods=["GET"])
+@custom_route("/user/<string:user_id>/account/token", methods=["GET"])
 def get_account_token(user_id):
     request_data = request.get_json()
     try:
@@ -107,7 +107,7 @@ def get_account_token(user_id):
         400,
     )
 
-@account_bp.route("/user/<string:user_id>/account/token", methods=[ "PUT"])
+@custom_route("/user/<string:user_id>/account/token", methods=[ "PUT"])
 def update_account_token(user_id):
     request_data = request.get_json()
 

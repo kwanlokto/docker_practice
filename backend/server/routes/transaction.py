@@ -1,4 +1,4 @@
-from flask import jsonify, request, Blueprint
+from flask import jsonify, request
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm.exc import NoResultFound
 import time
@@ -8,13 +8,13 @@ from server.models import db
 from server.models.account import Account
 from server.models.transaction import Transaction
 from server.models.user import User
+from server.routes.server import custom_route
 
-transaction_bp = Blueprint('products', __name__)
 
 MAX_RETRIES = 3
 RETRY_DELAY_RANGE = (0.1, 0.5)  # seconds
 
-@transaction_bp.route(
+@custom_route(
     "/user/<string:user_id>/account/<string:account_id>/transaction",
     methods=["GET"],
 )
@@ -37,7 +37,7 @@ def get_transaction(user_id, account_id):
         200,
     )
 
-@transaction_bp.route(
+@custom_route(
     "/user/<string:user_id>/account/<string:account_id>/transaction",
     methods=["POST"],
 )

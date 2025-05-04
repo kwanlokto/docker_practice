@@ -1,7 +1,10 @@
-from server import create_app
-
-app = create_app()
+from server.routes.server import webserver
+from definitions import APP_ENV
 
 
 if __name__ == "__main__":
-    app.run()
+    webserver.run(
+        host="0.0.0.0",
+        port=5000,
+        debug=APP_ENV == "development",
+    )
