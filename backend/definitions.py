@@ -1,3 +1,3 @@
-JWT_ALG=""
-JWT_SECRET =""
+JWT_ALG = ""
+JWT_SECRET = ""
 APP_ENV = ""

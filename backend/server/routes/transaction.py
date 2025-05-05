@@ -14,6 +14,7 @@ from server.routes.server import custom_route
 MAX_RETRIES = 3
 RETRY_DELAY_RANGE = (0.1, 0.5)  # seconds
 
+
 @custom_route(
     "/user/<string:user_id>/account/<string:account_id>/transaction",
     methods=["GET"],
@@ -21,11 +22,7 @@ RETRY_DELAY_RANGE = (0.1, 0.5)  # seconds
 def get_transaction(user_id, account_id):
     # get all transactions for the selected account
     transactions = (
-        Transaction.query.join(Account)
-        .filter_by(id=account_id)
-        .join(User)
-        .filter_by(id=user_id)
-        .all()
+        Transaction.query.join(Account).filter_by(id=account_id).join(User).filter_by(id=user_id).all()
     )
     return jsonify(
         isError=False,
@@ -33,6 +30,7 @@ def get_transaction(user_id, account_id):
         statusCode=200,
         data=[transaction.as_dict() for transaction in transactions],
     )
+
 
 @custom_route(
     "/user/<string:user_id>/account/<string:account_id>/transaction",
@@ -58,11 +56,16 @@ def create_transaction(user_id, account_id):
                     db.session.add(new_transaction)
 
                 db.session.commit()
-                return jsonify({
-                    "isError": False,
-                    "message": "Transaction completed",
-                    "statusCode": 200,
-                }), 200
+                return (
+                    jsonify(
+                        {
+                            "isError": False,
+                            "message": "Transaction completed",
+                            "statusCode": 200,
+                        }
+                    ),
+                    200,
+                )
 
             except OperationalError as e:
                 if "deadlock detected" in str(e).lower() and attempt < MAX_RETRIES - 1:
@@ -74,24 +77,29 @@ def create_transaction(user_id, account_id):
                     raise
 
     except KeyError:
-        return jsonify({
-            "isError": True,
-            "message": "Missing required field",
-            "statusCode": 400,
-        })
+        return jsonify(
+            {
+                "isError": True,
+                "message": "Missing required field",
+                "statusCode": 400,
+            }
+        )
 
     except NoResultFound:
-        return jsonify({
-            "isError": True,
-            "message": "Account not found",
-            "statusCode": 404,
-        })
+        return jsonify(
+            {
+                "isError": True,
+                "message": "Account not found",
+                "statusCode": 404,
+            }
+        )
 
     except Exception as err:
         db.session.rollback()
-        return jsonify({
-            "isError": True,
-            "message": f"Transaction failed: {str(err)}",
-            "statusCode": 500,
-        })
-
+        return jsonify(
+            {
+                "isError": True,
+                "message": f"Transaction failed: {str(err)}",
+                "statusCode": 500,
+            }
+        )

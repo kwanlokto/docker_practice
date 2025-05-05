@@ -16,13 +16,11 @@ from datetime import timedelta
 webserver = Flask(__name__)
 CORS(webserver)
 # Configure Database URI
-DATABASE_URI = (
-    "mysql+mysqlconnector://{user}:{password}@{server}/{database}".format(
-        user=os.environ["DB_USER"],
-        password=os.environ["DB_PASS"],
-        server=os.environ["DB_SERVER"],
-        database=os.environ["DB_NAME"],
-    )
+DATABASE_URI = "mysql+mysqlconnector://{user}:{password}@{server}/{database}".format(
+    user=os.environ["DB_USER"],
+    password=os.environ["DB_PASS"],
+    server=os.environ["DB_SERVER"],
+    database=os.environ["DB_NAME"],
 )
 webserver.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
 

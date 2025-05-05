@@ -4,6 +4,7 @@ from server.routes.account import *
 from server.routes.server import custom_route
 from flask import jsonify
 
+
 @custom_route("/ping", methods=["GET"])
 def ping():
     print("EHLLOO ENTERED!", flush=True)
