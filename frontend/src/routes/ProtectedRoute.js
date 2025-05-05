@@ -3,7 +3,7 @@
 import { Redirect, Route } from 'react-router-dom';
 
 import React from 'react';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 const isTokenValid = (token) => {
     try {

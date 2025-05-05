@@ -40,11 +40,12 @@ export const SignUp = () => {
   const classes = useStyles();
 
   const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
 
   const signUp = async () => {
-    const res = userSignup(email, firstName, lastName)
+    const res = userSignup(email, password, firstName, lastName)
     if (res.success) {
       localStorage.setItem("user.token", res.data.id)
     }
@@ -99,6 +100,19 @@ export const SignUp = () => {
                 autoComplete="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="password"
+                label="Password"
+                name="password"
+                autoFocus
+                value={password}
+                type="password"
+                onChange={e => setPassword(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>

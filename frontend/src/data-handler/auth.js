@@ -49,11 +49,12 @@ export const userLogin = async (email) => {
     })
 }
 
-export const userSignup = async (email, firstName, lastName) => {
+export const userSignup = async (email, password, firstName, lastName) => {
     return axios.post(`${API}/user/signup`, {
         first_name: firstName,
         last_name: lastName,
-        email: email
+        email: email,
+        password: password
     }).then(res => {
         return res
     }).catch((error) => {
