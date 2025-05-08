@@ -7,13 +7,13 @@ import {
   IconButton,
   TextField,
   Typography
-} from "@mui/material";
+} from "@material-ui/core";
 import React, { useState } from "react";
 
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-const BankingDashboard = () => {
+export const Dashboard = () => {
   const [accounts, setAccounts] = useState([
     { id: 1, name: "Checking", balance: 1200.5 },
     { id: 2, name: "Savings", balance: 5500.75 },
@@ -78,5 +78,3 @@ const BankingDashboard = () => {
     </Box>
   );
 };
-
-export default BankingDashboard;
