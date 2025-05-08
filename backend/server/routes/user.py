@@ -1,3 +1,4 @@
+import secrets
 from flask import jsonify, request
 from server.models import db
 from server.models.user import User
@@ -51,22 +52,25 @@ def user_login():
         if not user.check_password(password):
             raise Exception("Incorrect password")
 
+        # Create session using ORM
+        token = secrets.token_urlsafe(32)
+        session = User(user_id=user.id, access_token=token)
+        db.session.add(session)
+        db.session.commit()
+
+        return jsonify(
+            isError=False,
+            message="Login successful",
+            statusCode=200,
+            data={
+                "user": user.as_dict(),
+                "token": token
+            }
+        )
+
     except KeyError as err:
-        msg = f"Failed to get user. ${err}"
-        return jsonify(
-            isError=True,
-            message=msg,
-            statusCode=400,
-        )
+        msg = f"Missing required field: {err}"
+        return jsonify(isError=True, message=msg, statusCode=400)
+
     except Exception as err:
-        return jsonify(
-            isError=True,
-            message=f"Missing User from DB. {err}",
-            statusCode=401,
-        )
-    return jsonify(
-        isError=False,
-        message="Success",
-        statusCode=200,
-        data=user.as_dict(),
-    )
+        return jsonify(isError=True, message=str(err), statusCode=401)
