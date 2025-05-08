@@ -1,13 +1,18 @@
 version: "3.7"
 
 services:
-  mysql:
-    image: mysql:5.7
+  postgres:
+    container_name: postgres_db
+    image: postgres:15
     volumes:
-      - mysql-data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: 1q2w3e4r
-      MYSQL_DATABASE: docker_practice
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    env_file:
+      - .env
+    command: -p ${POSTGRES_PORT}
+    networks:
+      - docker_practice
   frontend:
     container_name: frontend
     build:
@@ -20,23 +25,28 @@ services:
       - 3000:3000
     environment:
       - CHOKIDAR_USEPOLLING=true
+    networks:
+      - docker_practice
   backend:
     container_name: backend
     platform: linux
     build:
-        context: ./backend
-        dockerfile: Dockerfile
+      context: ./backend
+      dockerfile: Dockerfile
     volumes:
       - .:/app
     ports:
       - 5000:5000
     environment:
       - GUNICORN_CMD_ARGS=-w 4 --threads 4 --worker-class=gthread -b 0.0.0.0:${FLASK_RUN_PORT}
-      - RUNNING_IN_DOCKER=DO-NOT-CHANGE  # The value of this env variable does nothing
+      - RUNNING_IN_DOCKER=DO-NOT-CHANGE
     env_file:
-      - ./backend/env/local.env
-  
-
+      - .env
+    networks:
+      - docker_practice
 volumes:
   node_modules:
-  mysql-data:
+  postgres-data:
+networks:
+  docker_practice:
+    driver: bridge
