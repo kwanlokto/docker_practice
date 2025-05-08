@@ -33,6 +33,7 @@ def upgrade():
         sa.Column("id", sa.Integer, primary_key=True),
         sa.Column("name", sa.String(80), unique=True, nullable=False),
         sa.Column("user_id", sa.Integer, sa.ForeignKey("user.id"), nullable=False),
+        sa.Column("balance", sa.Numeric, default=0),
     )
 
     op.create_table(
