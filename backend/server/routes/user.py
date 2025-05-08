@@ -14,8 +14,10 @@ def user_signup():
         first_name = request_data["first_name"]
         last_name = request_data["last_name"]
         email = request_data["email"]
+        password = request_data["password"]
 
         new_user = User(first_name=first_name, last_name=last_name, email=email)
+        new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
     except KeyError as err:
@@ -44,7 +46,10 @@ def user_login():
     try:
         request_data = request.get_json()
         email = request_data["email"]
+        password = request_data["password"]
         user = User.query.filter_by(email=email).one()
+        if not user.check_password(password):
+            raise Exception("Incorrect password")
 
     except KeyError as err:
         msg = f"Failed to get user. ${err}"

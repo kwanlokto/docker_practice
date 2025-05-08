@@ -25,11 +25,9 @@ def create_account():
     # add a new account for the user
     try:
         request_data = request.get_json()
-        username = request_data["username"]
-        password = request_data["password"]
+        name = request_data["name"]
 
-        new_account = Account(username=username)
-        new_account.set_password(password)
+        new_account = Account(name=name)
         db.session.add(new_account)
         db.session.commit()
     except KeyError:

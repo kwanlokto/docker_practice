@@ -19,18 +19,20 @@ depends_on = None
 def upgrade():
     op.create_table(
         "user",
-        sa.Column("id", sa.Integer, primary_key=True),
-        sa.Column("first_name", sa.String(20), nullable=False),
-        sa.Column("last_name", sa.String(20), nullable=False),
-        sa.Column("email", sa.String(120), unique=True, nullable=False),
+        sa.Column("id", sa.Integer, nullable=False),
+        sa.Column("first_name", sa.String(length=20), nullable=False),
+        sa.Column("last_name", sa.String(length=20), nullable=False),
+        sa.Column("email", sa.String(length=120), nullable=False, unique=True),
+        sa.Column("password_hash", sa.String(length=128), nullable=True),
+        sa.Column("access_token", sa.String(10)),
+        sa.PrimaryKeyConstraint("id"),
     )
 
     op.create_table(
         "account",
         sa.Column("id", sa.Integer, primary_key=True),
-        sa.Column("username", sa.String(80), unique=True, nullable=False),
+        sa.Column("name", sa.String(80), unique=True, nullable=False),
         sa.Column("user_id", sa.Integer, sa.ForeignKey("user.id"), nullable=False),
-        sa.Column("password_hash", sa.String(128)),
     )
 
     op.create_table(
