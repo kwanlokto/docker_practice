@@ -3,14 +3,13 @@ import traceback
 from datetime import datetime
 from functools import wraps
 
-from definitions import JWT_ALG, JWT_SECRET
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from jwt import decode
 from flask_migrate import Migrate
-from flask_jwt_extended import JWTManager
+from server.models.user import User
 from server.models import db
 from datetime import timedelta
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 
 # Flask web server definition
 webserver = Flask(__name__)
@@ -48,10 +47,7 @@ def custom_route(rule, **options):
                 resp_body = function_reference(*args, **kwargs)
                 status_code = 200
             except Exception as err:
-                resp_body = jsonify(message=err.message, title=err.title)
-                status_code = err.status_code
-            except Exception as err:
-                resp_body = jsonify(message="[Cloud API] Internal server error.")
+                resp_body = jsonify(message=err.message)
                 status_code = 500
 
             return (resp_body, status_code)
@@ -59,3 +55,20 @@ def custom_route(rule, **options):
         return wrapper
 
     return decorator
+
+def require_token(f):
+    @jwt_required()
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        user_id = get_jwt_identity()
+        user = User.query.filter_by(id=user_id).one_or_none()
+        if not user:
+            raise Exception(f"Failed to find {user_id} in the system")
+
+        incoming_token = request.headers.get("Authorization", "").replace("Bearer ", "")
+        if user.access_token != incoming_token:
+            raise Exception("Token mismatch")
+
+        request.user = user  # attach user info to the request for downstream use
+        return f(*args, **kwargs)
+    return decorated_function

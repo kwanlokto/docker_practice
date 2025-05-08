@@ -1,8 +1,8 @@
-import secrets
 from flask import jsonify, request
 from server.models import db
 from server.models.user import User
 from server.routes.server import custom_route
+from flask_jwt_extended import create_access_token
 
 
 @custom_route("/user/signup", methods=["POST"])
@@ -53,9 +53,8 @@ def user_login():
             raise Exception("Incorrect password")
 
         # Create session using ORM
-        token = secrets.token_urlsafe(32)
-        session = User(user_id=user.id, access_token=token)
-        db.session.add(session)
+        token = create_access_token(identity=user.id)
+        user.access_token = token  # Store token in DB if needed for revocation/validation
         db.session.commit()
 
         return jsonify(
