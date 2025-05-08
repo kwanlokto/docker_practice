@@ -1,8 +1,8 @@
 import os
-import traceback
 from datetime import datetime
 from functools import wraps
 
+from definitions import POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_SERVER, POSTGRES_PORT, POSTGRES_DB
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_migrate import Migrate
@@ -15,12 +15,7 @@ from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 webserver = Flask(__name__)
 CORS(webserver)
 # Configure Database URI
-DATABASE_URI = "postgresql+psycopg2://{user}:{password}@{server}/{database}".format(
-    user=os.environ["POSTGRES_USER"],
-    password=os.environ["POSTGRES_PASSWORD"],
-    server=os.environ["POSTGRES_SERVER"],
-    database=os.environ["POSTGRES_DB"],
-)
+DATABASE_URI = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
 
 webserver.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
 
