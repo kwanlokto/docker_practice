@@ -48,7 +48,7 @@ export const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = userLogin(email);
+      const res = userLogin(email, password);
 
       // ✅ Store token in localStorage
       localStorage.setItem('user.token', res.data.token);
