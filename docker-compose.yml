@@ -11,20 +11,23 @@ services:
     command: -p ${POSTGRES_PORT}
     networks:
       - docker_practice
+
   frontend:
     container_name: frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
     volumes:
-      - "node_modules:/app/node_modules"
       - .:/app
+      - /app/node_modules
     ports:
       - 3000:3000
     environment:
       - CHOKIDAR_USEPOLLING=true
     networks:
       - docker_practice
+    command: npm start  # <-- must use dev server for hot reload
+
   backend:
     container_name: backend
     platform: linux
@@ -43,7 +46,6 @@ services:
     networks:
       - docker_practice
 volumes:
-  node_modules:
   postgres-data:
 networks:
   docker_practice:
