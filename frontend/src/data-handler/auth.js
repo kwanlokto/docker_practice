@@ -33,11 +33,9 @@ export const userSignup = async (email, password, firstName, lastName) => {
 
 
 /* Functions for Accounts */
-export const getAllAccounts = async () => {
-  const user = localStorage.getItem('user.token');
-
+export const getAllAccounts = async (user_id) => {
   return axios
-    .get(`${API}/user/${user.id}/account`)
+    .get(`${API}/user/${user_id}/account`)
     .then((res) => {
       return res;
     })
@@ -46,13 +44,10 @@ export const getAllAccounts = async () => {
     });
 };
 
-export const createNewAccount = async (username, password) => {
-  const user = localStorage.getItem('user.token');
-
+export const createNewAccount = async (user_id, name) => {
   return axios
-    .post(`${API}/user/${user.id}/account`, {
-      username: username,
-      password: password,
+    .post(`${API}/user/${user_id}/account`, {
+      name: name,
     })
     .then((res) => {
       return res;
