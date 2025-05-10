@@ -6,19 +6,19 @@ import {
   Grid,
   IconButton,
   TextField,
-  Typography
-} from "@material-ui/core";
-import React, { useState } from "react";
+  Typography,
+} from '@material-ui/core';
 
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { useState } from 'react';
 
 export const Dashboard = () => {
   const [accounts, setAccounts] = useState([
-    { id: 1, name: "Checking", balance: 1200.5 },
-    { id: 2, name: "Savings", balance: 5500.75 },
+    { id: 1, name: 'Checking', balance: 1200.5 },
+    { id: 2, name: 'Savings', balance: 5500.75 },
   ]);
-  const [newAccountName, setNewAccountName] = useState("");
+  const [newAccountName, setNewAccountName] = useState('');
 
   const createAccount = () => {
     if (!newAccountName.trim()) return;
@@ -28,7 +28,7 @@ export const Dashboard = () => {
       balance: 0.0,
     };
     setAccounts([...accounts, newAccount]);
-    setNewAccountName("");
+    setNewAccountName('');
   };
 
   const removeAccount = (id) => {
@@ -36,7 +36,7 @@ export const Dashboard = () => {
   };
 
   return (
-    <Box sx={{ p: 4, maxWidth: 1000, mx: "auto" }}>
+    <Box sx={{ p: 4, maxWidth: 1000, mx: 'auto' }}>
       <Typography variant="h4" gutterBottom>
         Your Accounts
       </Typography>
@@ -46,7 +46,11 @@ export const Dashboard = () => {
           <Grid item xs={12} sm={6} md={4} key={account.id}>
             <Card>
               <CardContent>
-                <Box display="flex" justifyContent="space-between" alignItems="center">
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
                   <Typography variant="h6">{account.name}</Typography>
                   <IconButton onClick={() => removeAccount(account.id)}>
                     <DeleteIcon color="error" />

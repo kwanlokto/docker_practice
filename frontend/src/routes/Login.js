@@ -15,7 +15,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import { userLogin } from "../data-handler/auth"
+import { userLogin } from '../data-handler/auth';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -48,10 +48,10 @@ export const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = userLogin(email)
+      const res = userLogin(email);
 
       // ✅ Store token in localStorage
-      localStorage.setItem("user.token", res.data.token);
+      localStorage.setItem('user.token', res.data.token);
 
       // ✅ Redirect to a protected route
       history.push('/dashboard');
@@ -82,7 +82,7 @@ export const Login = () => {
             name="email"
             autoFocus
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             variant="outlined"
@@ -95,7 +95,7 @@ export const Login = () => {
             autoFocus
             value={password}
             type="password"
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}

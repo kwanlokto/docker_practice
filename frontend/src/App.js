@@ -10,20 +10,20 @@ import axios from 'axios';
 const apiUrl = 'http://localhost:5000'; // TODO: use process env
 
 axios.interceptors.request.use(
-  config => {
+  (config) => {
     const { origin } = new URL(config.url);
     const allowedOrigins = [apiUrl];
-    const token = localStorage.getItem('token');    
+    const token = localStorage.getItem('user.token');
     if (allowedOrigins.includes(origin) && token) {
       config.headers.authorization = `Bearer ${token}`;
     }
     return config;
   },
-  error => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 export default function App() {
-  const storedJwt = localStorage.getItem('token');
+  const storedJwt = localStorage.getItem('user.token');
   const [jwt, setJwt] = useState(storedJwt || null);
 
   return (
@@ -36,9 +36,6 @@ export default function App() {
           <Route path="/signup">
             <SignUp />
           </Route>
-
-          {/* Protected route example */}
-          <ProtectedRoute path="/dashboard" component={Dashboard} />
 
           {/* Default route */}
           <ProtectedRoute exact path="/" component={Dashboard} />

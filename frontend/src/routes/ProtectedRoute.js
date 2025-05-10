@@ -15,7 +15,7 @@ const isTokenValid = (token) => {
   };
   
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('user.token');
 
   // You could also add token expiry checks here if needed
   const isAuthenticated = !!token;
