@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
 import { Dashboard } from './routes/Dashboard'; // Example protected page
@@ -23,9 +22,6 @@ axios.interceptors.request.use(
 );
 
 export default function App() {
-  const storedJwt = localStorage.getItem('user.token');
-  const [jwt, setJwt] = useState(storedJwt || null);
-
   return (
     <Router>
       <div>
