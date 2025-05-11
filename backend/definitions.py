@@ -14,9 +14,8 @@ if "RUNNING_IN_DOCKER" not in os.environ:
     load_dotenv()
 
 try:
-    JWT_ALG = ""
-    JWT_SECRET = ""
-    APP_ENV = ""
+    JWT_SECRET = os.environ["JWT_SECRET"]
+    APP_ENV = "development"
 
     POSTGRES_SERVER = os.environ["POSTGRES_SERVER"]
     POSTGRES_PORT = os.environ["POSTGRES_PORT"]

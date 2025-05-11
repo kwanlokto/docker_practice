@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 from functools import wraps
 
-from definitions import POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_SERVER, POSTGRES_PORT, POSTGRES_DB
+from definitions import POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_SERVER, POSTGRES_PORT, POSTGRES_DB, JWT_SECRET
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_migrate import Migrate
@@ -23,7 +23,7 @@ webserver.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
 db.init_app(webserver)
 Migrate(webserver, db)
 
-webserver.config["JWT_SECRET_KEY"] = "your_secret_key"  # Change this to a more secure key
+webserver.config["JWT_SECRET_KEY"] = JWT_SECRET  # Change this to a more secure key
 webserver.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)  # Set expiration time for access token
 
 JWTManager(webserver)

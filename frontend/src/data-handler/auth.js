@@ -31,7 +31,6 @@ export const userSignup = async (email, password, firstName, lastName) => {
     });
 };
 
-
 /* Functions for Accounts */
 export const getAllAccounts = async (user_id) => {
   return axios
