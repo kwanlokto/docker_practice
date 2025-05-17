@@ -11,7 +11,8 @@ from server.routes.server import custom_route
 @custom_route("/user/<string:user_id>/account", methods=["GET"])
 def get_account(user_id):
     # get all accounts for the user
-    accounts = Account.query.join(User).filter_by(id=user_id).all()
+    accounts = Account.query.filter_by(user_id=user_id).all()
+
     return jsonify(
         isError=False,
         message="Success",

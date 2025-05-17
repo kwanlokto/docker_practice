@@ -22,7 +22,7 @@ RETRY_DELAY_RANGE = (0.1, 0.5)  # seconds
 def get_transaction(user_id, account_id):
     # get all transactions for the selected account
     transactions = (
-        Transaction.query.join(Account).filter_by(id=account_id).join(User).filter_by(id=user_id).all()
+        Transaction.query.join(Account).filter_by(id=account_id, user_id=user_id).all()
     )
     return jsonify(
         isError=False,
@@ -46,7 +46,7 @@ def create_transaction(user_id, account_id):
             try:
                 with db.session.begin_nested():  # Use SAVEPOINT for retries
                     # Lock the account row
-                    db.session.query(Account).filter_by(id=account_id).with_for_update()
+                    db.session.query(Account).filter_by(id=account_id, user_id=user_id).ith_for_update()
 
                     new_transaction = Transaction(
                         account_id=account_id,
