@@ -19,7 +19,7 @@ RETRY_DELAY_RANGE = (0.1, 0.5)
     "/user/<string:user_id>/account/<string:account_id>/transaction",
     methods=["GET"],
 )
-def get_transaction(user_id, account_id):
+def get_transactions(user_id, account_id):
     transactions = (
         Transaction.query
         .join(Account)
@@ -53,6 +53,7 @@ def create_transaction(user_id, account_id):
                         .with_for_update()
                         .one()
                     )
+                    account.balance += value
 
                     new_transaction = Transaction(
                         account_id=account.id,
