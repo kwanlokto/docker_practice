@@ -4,8 +4,10 @@ import {
   List,
   ListItem,
   ListItemText,
+  MenuItem,
+  Select,
   TextField,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import { createTransaction, getAllTransactions } from '../data-handler/auth';
 import { useEffect, useState } from 'react';
@@ -19,9 +21,12 @@ export const AccountDetail = () => {
   const [operation, setOperation] = useState('');
 
   const fetchTransactions = async () => {
-    const response = await getAllTransactions(accountId);
-    console.log(response.data.data)
-    setTransactions(response.data.data);
+    try {
+      const response = await getAllTransactions(accountId);
+      setTransactions(response.data.data);
+    } catch (error) {
+      console.error('Failed to fetch transactions', error);
+    }
   };
 
   useEffect(() => {
@@ -40,39 +45,55 @@ export const AccountDetail = () => {
     }
   };
 
+  const isAddDisabled = !operation || !value || Number(value) <= 0;
+
   return (
-    <Box sx={{ p: 4, maxWidth: 800, mx: 'auto' }}>
+    <Box sx={{ p: 4, maxWidth: 600, mx: 'auto' }}>
       <Typography variant="h5" gutterBottom>
         Transactions for Account #{accountId}
       </Typography>
 
-      {/* Transaction creation form */}
-      <Box display="flex" flexDirection="column" mb={4}>
+      <Box
+        mb={4}
+        sx={{ gap: 8, alignItems: 'center', flexWrap: 'wrap', display: 'flex' }}
+      >
         <TextField
           label="Operation"
           value={operation}
           onChange={(e) => setOperation(e.target.value)}
-          margin="normal"
+          type="string"
         />
+
         <TextField
           label="Value"
           value={value}
           onChange={(e) => setValue(e.target.value)}
           type="number"
-          margin="normal"
+          inputProps={{ min: 0, step: '0.01' }}
+          sx={{ flexGrow: 1, minWidth: 100 }}
         />
-        <Button variant="contained" color="primary" onClick={handleCreateTransaction}>
-          Add Transaction
+
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleCreateTransaction}
+          disabled={isAddDisabled}
+          sx={{ height: 40 }}
+        >
+          Add
         </Button>
       </Box>
 
-      {/* Transaction list */}
       <List>
-        {transactions.map((transaction) => (
-          <ListItem key={transaction.id}>
+        {transactions.map(({ id, value, operation, created_at }) => (
+          <ListItem key={id} divider>
             <ListItemText
-              primary={`$${transaction.value} — ${transaction.operation}`}
-              secondary={`Transaction ID: ${transaction.id}`}
+              primary={`${
+                operation.charAt(0).toUpperCase() + operation.slice(1)
+              }: $${Number(value).toFixed(2)}`}
+              secondary={`Transaction ID: ${id} — ${new Date(
+                created_at,
+              ).toLocaleString()}`}
             />
           </ListItem>
         ))}
