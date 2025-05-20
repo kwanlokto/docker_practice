@@ -20,18 +20,18 @@ def upgrade():
     op.create_table(
         "user",
         sa.Column("id", sa.Integer, nullable=False),
-        sa.Column("first_name", sa.String(length=20), nullable=False),
-        sa.Column("last_name", sa.String(length=20), nullable=False),
-        sa.Column("email", sa.String(length=120), nullable=False, unique=True),
-        sa.Column("password_hash", sa.String(length=128), nullable=True),
-        sa.Column("access_token", sa.String(10)),
+        sa.Column("first_name", sa.String(255), nullable=False),
+        sa.Column("last_name", sa.String(255), nullable=False),
+        sa.Column("email", sa.String(255), nullable=False, unique=True),
+        sa.Column("password_hash", sa.String(255), nullable=True),
+        sa.Column("access_token", sa.Text()),
         sa.PrimaryKeyConstraint("id"),
     )
 
     op.create_table(
         "account",
         sa.Column("id", sa.Integer, primary_key=True),
-        sa.Column("name", sa.String(80), unique=True, nullable=False),
+        sa.Column("name", sa.String(255), unique=True, nullable=False),
         sa.Column("user_id", sa.Integer, sa.ForeignKey("user.id"), nullable=False),
         sa.Column("balance", sa.Numeric, default=0),
     )
@@ -40,7 +40,7 @@ def upgrade():
         "transaction",
         sa.Column("id", sa.Integer, primary_key=True),
         sa.Column("account_id", sa.Integer, sa.ForeignKey("account.id"), nullable=False),
-        sa.Column("operation", sa.String(20), nullable=False),
+        sa.Column("operation", sa.String(255), nullable=False),
         sa.Column("value", sa.Numeric, nullable=False),
     )
 

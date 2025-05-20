@@ -5,7 +5,7 @@ const API = 'http://localhost:5000';
 
 /* Functions for User */
 export const userLogin = async (email, password) => {
-  axios
+  return axios
     .post(`${API}/user/login`, { email, password })
     .then((res) => {
       return res;

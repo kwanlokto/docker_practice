@@ -48,13 +48,13 @@ export const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = userLogin(email, password);
-
+      const res = await userLogin(email, password);
+      console.log(res)
       // ✅ Store token in localStorage
-      localStorage.setItem('user.token', res.data.token);
+      localStorage.setItem('user.token', res.data.data.token);
 
       // ✅ Redirect to a protected route
-      history.push('/dashboard');
+      history.push('/');
     } catch (err) {
       console.error(err);
       setError('Invalid credentials');

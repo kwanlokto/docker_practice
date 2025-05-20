@@ -1,7 +1,7 @@
 import { Box, List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 
-import { getTransactionsForAccount } from '../../data-handler/auth';
+import { getAllTransactions } from '../../data-handler/auth';
 import { useParams } from 'react-router-dom';
 
 export const AccountDetail = () => {
@@ -10,7 +10,7 @@ export const AccountDetail = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getTransactionsForAccount(accountId);
+      const response = await getAllTransactions(accountId);
       setTransactions(response.data.data);
     };
     fetchData();
