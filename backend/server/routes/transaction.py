@@ -3,7 +3,7 @@ from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm.exc import NoResultFound
 import time
 import random
-
+from decimal import Decimal
 from server.models import db
 from server.models.account import Account
 from server.models.transaction import Transaction
@@ -54,7 +54,7 @@ def create_transaction(account_id):
                         .with_for_update()
                         .one()
                     )
-                    account.balance += value
+                    account.balance += Decimal(str(value))
 
                     new_transaction = Transaction(
                         account_id=account.id,
