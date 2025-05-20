@@ -11,22 +11,16 @@ import {
 
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { createNewAccount, getAllAccounts } from '../data-handler/auth';
 
 export const Dashboard = () => {
-  const [accounts, setAccounts] = useState([
-    { id: 1, name: 'Checking', balance: 1200.5 },
-    { id: 2, name: 'Savings', balance: 5500.75 },
-  ]);
+  const [accounts, setAccounts] = useState([]);
   const [newAccountName, setNewAccountName] = useState('');
 
   const createAccount = () => {
     if (!newAccountName.trim()) return;
-    const newAccount = {
-      id: Date.now(),
-      name: newAccountName,
-      balance: 0.0,
-    };
+    const newAccount = createNewAccount(newAccountName);
     setAccounts([...accounts, newAccount]);
     setNewAccountName('');
   };
@@ -34,6 +28,16 @@ export const Dashboard = () => {
   const removeAccount = (id) => {
     setAccounts(accounts.filter((acc) => acc.id !== id));
   };
+
+
+  const getAllAccountsForUser = async () => {
+    const allAccounts = await getAllAccounts();
+    setAccounts(allAccounts.data.data);
+  };
+
+  useEffect(() => {
+    getAllAccountsForUser();
+  }, []);
 
   return (
     <Box sx={{ p: 4, maxWidth: 1000, mx: 'auto' }}>
