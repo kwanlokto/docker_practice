@@ -8,11 +8,11 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
+import { createNewAccount, getAllAccounts } from '../data-handler/auth';
+import { useEffect, useState } from 'react';
 
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { useEffect, useState } from 'react';
-import { createNewAccount, getAllAccounts } from '../data-handler/auth';
 
 export const Dashboard = () => {
   const [accounts, setAccounts] = useState([]);
@@ -61,7 +61,7 @@ export const Dashboard = () => {
                   </IconButton>
                 </Box>
                 <Typography color="textSecondary">
-                  Balance: ${account.balance.toFixed(2)}
+                  Balance: ${account.balance}
                 </Typography>
               </CardContent>
             </Card>
