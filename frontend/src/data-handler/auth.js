@@ -34,7 +34,7 @@ export const userSignup = async (email, password, firstName, lastName) => {
 /* Functions for Accounts */
 export const getAllAccounts = async (user_id) => {
   return axios
-    .get(`${API}/user/${user_id}/account`)
+    .get(`${API}/account`)
     .then((res) => {
       return res;
     })
@@ -43,9 +43,9 @@ export const getAllAccounts = async (user_id) => {
     });
 };
 
-export const createNewAccount = async (user_id, name) => {
+export const createNewAccount = async (name) => {
   return axios
-    .post(`${API}/user/${user_id}/account`, {
+    .post(`${API}/account`, {
       name: name,
     })
     .then((res) => {
@@ -58,7 +58,7 @@ export const createNewAccount = async (user_id, name) => {
 
 export const createTransaction = async (user_id, account_id, operation, value) => {
   return axios
-    .post(`${API}/user/${user_id}/account/${account_id}/transaction`, {
+    .post(`${API}/account/${account_id}/transaction`, {
       operation: operation,
       value: value,
     })
@@ -73,7 +73,7 @@ export const createTransaction = async (user_id, account_id, operation, value) =
 
 export const getAllTransactions = async (user_id, account_id) => {
   return axios
-    .get(`${API}/user/${user_id}/account/${account_id}/transaction`)
+    .get(`${API}/account/${account_id}/transaction`)
     .then((res) => {
       return res;
     })

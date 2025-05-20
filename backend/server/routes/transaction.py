@@ -8,7 +8,7 @@ from server.models import db
 from server.models.account import Account
 from server.models.transaction import Transaction
 from server.models.user import User
-from server.routes.server import custom_route
+from server.routes.server import custom_route, require_token
 
 
 MAX_RETRIES = 3
@@ -16,14 +16,15 @@ RETRY_DELAY_RANGE = (0.1, 0.5)
 
 
 @custom_route(
-    "/user/<string:user_id>/account/<string:account_id>/transaction",
+    "/account/<string:account_id>/transaction",
     methods=["GET"],
 )
-def get_transactions(user_id, account_id):
+@require_token
+def get_transactions(account_id):
     transactions = (
         Transaction.query
         .join(Account)
-        .filter(Account.id == account_id, Account.user_id == user_id)
+        .filter(Account.id == account_id, Account.user_id == request.user.id)
         .all()
     )
     return jsonify(
@@ -35,10 +36,11 @@ def get_transactions(user_id, account_id):
 
 
 @custom_route(
-    "/user/<string:user_id>/account/<string:account_id>/transaction",
+    "/account/<string:account_id>/transaction",
     methods=["POST"],
 )
-def create_transaction(user_id, account_id):
+@require_token
+def create_transaction(account_id):
     try:
         request_data = request.get_json()
         operation = request_data["operation"]
@@ -49,7 +51,7 @@ def create_transaction(user_id, account_id):
                 with db.session.begin_nested():
                     account = (
                         db.session.query(Account)
-                        .filter_by(id=account_id, user_id=user_id)
+                        .filter_by(id=account_id, user_id=request.user.id)
                         .with_for_update()
                         .one()
                     )
