@@ -13,8 +13,11 @@ import { useEffect, useState } from 'react';
 
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { useHistory } from 'react-router-dom';
 
 export const Dashboard = () => {
+    const history = useHistory();
+
   const [accounts, setAccounts] = useState([]);
   const [newAccountName, setNewAccountName] = useState('');
 
@@ -48,7 +51,7 @@ export const Dashboard = () => {
       <Grid container spacing={2}>
         {accounts.map((account) => (
           <Grid item xs={12} sm={6} md={4} key={account.id}>
-            <Card>
+            <Card onClick={() => history.push(`/account/${account.id}`)}>
               <CardContent>
                 <Box
                   display="flex"

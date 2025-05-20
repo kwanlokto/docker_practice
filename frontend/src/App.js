@@ -1,11 +1,11 @@
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
-import { Dashboard } from './routes/Dashboard'; // Example protected page
+import { AccountDetail } from './routes/Account';
+import { Dashboard } from './routes/Dashboard';
 import { Login } from './routes/Login';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import { SignUp } from './routes/SignUp';
 import axios from 'axios';
-import { AccountDetail } from './routes/account';
 
 const apiUrl = 'http://localhost:5000'; // TODO: use process env
 
@@ -36,8 +36,7 @@ export default function App() {
 
           {/* Default route */}
           <ProtectedRoute exact path="/" component={Dashboard} />
-          <ProtectedRoute path="/accounts/:accountId" element={<AccountDetail />} />
-
+          <ProtectedRoute path="/account/:accountId" component={AccountDetail} />
         </Switch>
       </div>
     </Router>

@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -15,6 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
 import { userLogin } from '../data-handler/auth';
 
 const useStyles = makeStyles((theme) => ({
@@ -49,7 +48,7 @@ export const Login = () => {
     e.preventDefault();
     try {
       const res = await userLogin(email, password);
-      console.log(res)
+
       // ✅ Store token in localStorage
       localStorage.setItem('user.token', res.data.data.token);
 

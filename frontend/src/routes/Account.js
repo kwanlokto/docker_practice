@@ -1,7 +1,7 @@
 import { Box, List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 
-import { getAllTransactions } from '../../data-handler/auth';
+import { getAllTransactions } from '../data-handler/auth';
 import { useParams } from 'react-router-dom';
 
 export const AccountDetail = () => {
@@ -22,11 +22,11 @@ export const AccountDetail = () => {
         Transactions for Account #{accountId}
       </Typography>
       <List>
-        {transactions.map((txn) => (
-          <ListItem key={txn.id}>
+        {transactions.map((transaction) => (
+          <ListItem key={transaction.id}>
             <ListItemText
-              primary={`$${txn.amount.toFixed(2)} - ${txn.description}`}
-              secondary={new Date(txn.date).toLocaleString()}
+              primary={`$${transaction.value.toFixed(2)}`}
+              secondary={new Date(transaction.created_at).toLocaleString()}
             />
           </ListItem>
         ))}
