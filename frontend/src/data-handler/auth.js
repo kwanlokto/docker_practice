@@ -55,3 +55,29 @@ export const createNewAccount = async (user_id, name) => {
       logHTTPError(error);
     });
 };
+
+export const createTransaction = async (user_id, account_id, operation, value) => {
+  return axios
+    .post(`${API}/user/${user_id}/account/${account_id}/transaction`, {
+      operation: operation,
+      value: value,
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      logHTTPError(error);
+    });
+}
+
+
+export const getAllTransactions = async (user_id, account_id) => {
+  return axios
+    .get(`${API}/user/${user_id}/account/${account_id}/transaction`)
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      logHTTPError(error);
+    });
+}
