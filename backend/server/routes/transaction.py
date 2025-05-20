@@ -7,7 +7,6 @@ import random
 from server.models import db
 from server.models.account import Account
 from server.models.transaction import Transaction
-from server.models.user import User
 from server.routes.server import custom_route, require_token
 
 

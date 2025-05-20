@@ -1,5 +1,3 @@
-import os
-from datetime import datetime
 from functools import wraps
 
 from definitions import POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_SERVER, POSTGRES_PORT, POSTGRES_DB, JWT_SECRET
