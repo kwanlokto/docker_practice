@@ -5,6 +5,7 @@ import { Login } from './routes/Login';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import { SignUp } from './routes/SignUp';
 import axios from 'axios';
+import { AccountDetail } from './routes/account';
 
 const apiUrl = 'http://localhost:5000'; // TODO: use process env
 
@@ -35,6 +36,8 @@ export default function App() {
 
           {/* Default route */}
           <ProtectedRoute exact path="/" component={Dashboard} />
+          <ProtectedRoute path="/accounts/:accountId" element={<AccountDetail />} />
+
         </Switch>
       </div>
     </Router>
