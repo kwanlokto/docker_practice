@@ -32,7 +32,7 @@ export const userSignup = async (email, password, firstName, lastName) => {
 };
 
 /* Functions for Accounts */
-export const getAllAccounts = async (user_id) => {
+export const getAllAccounts = async () => {
   return axios
     .get(`${API}/account`)
     .then((res) => {
@@ -56,7 +56,7 @@ export const createNewAccount = async (name) => {
     });
 };
 
-export const createTransaction = async (user_id, account_id, operation, value) => {
+export const createTransaction = async (account_id, operation, value) => {
   return axios
     .post(`${API}/account/${account_id}/transaction`, {
       operation: operation,
@@ -71,7 +71,7 @@ export const createTransaction = async (user_id, account_id, operation, value) =
 }
 
 
-export const getAllTransactions = async (user_id, account_id) => {
+export const getAllTransactions = async (account_id) => {
   return axios
     .get(`${API}/account/${account_id}/transaction`)
     .then((res) => {
