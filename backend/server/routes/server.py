@@ -24,8 +24,15 @@ Migrate(webserver, db)
 webserver.config["JWT_SECRET_KEY"] = JWT_SECRET  # Change this to a more secure key
 webserver.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)  # Set expiration time for access token
 
-JWTManager(webserver)
+jwt = JWTManager(webserver)
 
+@jwt.expired_token_loader
+def expired_token_callback(jwt_header, jwt_payload):
+    return jsonify({
+        'message': 'Token has expired',
+        'statusCode': 401,
+        'isError': True
+    }), 401
 
 def custom_route(rule, **options):
     """
@@ -40,7 +47,7 @@ def custom_route(rule, **options):
                 resp_body = function_reference(*args, **kwargs)
                 status_code = 200
             except Exception as err:
-                resp_body = jsonify(message=err.message)
+                resp_body = jsonify(message=str(err))
                 status_code = 500
 
             return (resp_body, status_code)
