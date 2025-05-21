@@ -1,21 +1,23 @@
 import {
   Box,
   Button,
+  IconButton,
   List,
   ListItem,
   ListItemText,
-  MenuItem,
-  Select,
   TextField,
   Typography,
 } from '@material-ui/core';
 import { createTransaction, getAllTransactions } from '../data-handler/auth';
 import { useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 
-import { useParams } from 'react-router-dom';
+import CloseIcon from '@material-ui/icons/Close';
 
 export const AccountDetail = () => {
   const { accountId } = useParams();
+  const history = useHistory();
+
   const [transactions, setTransactions] = useState([]);
   const [value, setValue] = useState('');
   const [operation, setOperation] = useState('');
@@ -41,63 +43,77 @@ export const AccountDetail = () => {
       setOperation('');
       fetchTransactions();
     } catch (err) {
-      console.error('Failed to create transaction', err);
+      console.error('Transaction failed', err);
     }
   };
 
   const isAddDisabled = !operation || !value || Number(value) <= 0;
 
   return (
-    <Box sx={{ p: 4, maxWidth: 600, mx: 'auto' }}>
-      <Typography variant="h5" gutterBottom>
-        Transactions for Account #{accountId}
-      </Typography>
-
+    <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
+      {/* Header */}
       <Box
-        mb={4}
-        sx={{ gap: 8, alignItems: 'center', flexWrap: 'wrap', display: 'flex' }}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={3}
+        px={2}
       >
-        <TextField
-          label="Operation"
-          value={operation}
-          onChange={(e) => setOperation(e.target.value)}
-          type="string"
-        />
-
-        <TextField
-          label="Value"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          type="number"
-          inputProps={{ min: 0, step: '0.01' }}
-          sx={{ flexGrow: 1, minWidth: 100 }}
-        />
-
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleCreateTransaction}
-          disabled={isAddDisabled}
-          sx={{ height: 40 }}
-        >
-          Add
-        </Button>
+        <Typography variant="h6">Account #{accountId} Transactions</Typography>
+        <IconButton onClick={() => history.push('/')}>
+          <CloseIcon />
+        </IconButton>
       </Box>
 
-      <List>
-        {transactions.map(({ id, value, operation, created_at }) => (
-          <ListItem key={id} divider>
-            <ListItemText
-              primary={`${
-                operation.charAt(0).toUpperCase() + operation.slice(1)
-              }: $${Number(value).toFixed(2)}`}
-              secondary={`Transaction ID: ${id} — ${new Date(
-                created_at,
-              ).toLocaleString()}`}
-            />
-          </ListItem>
-        ))}
-      </List>
+      {/* Transaction Form */}
+      <Box sx={{ p: 2, mb: 4 }}>
+        <Box
+          display="flex"
+          sx={{ gap: '16px' }}
+          alignItems="center"
+          flexWrap="wrap"
+        >
+          <TextField
+            label="Operation"
+            value={operation}
+            onChange={(e) => setOperation(e.target.value)}
+            size="small"
+            sx={{ flexGrow: 1 }}
+          />
+          <TextField
+            label="Value"
+            type="number"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            inputProps={{ min: 0, step: '0.01' }}
+            size="small"
+            sx={{ width: 120 }}
+          />
+          <Button
+            variant="contained"
+            onClick={handleCreateTransaction}
+            disabled={isAddDisabled}
+          >
+            Add
+          </Button>
+        </Box>
+      </Box>
+
+      {/* Transaction List */}
+      <Box>
+        <List>
+          {transactions.map(({ id, value, operation, created_at }) => (
+            <ListItem key={id} divider>
+              <ListItemText
+                primary={`${
+                  operation.charAt(0).toUpperCase() + operation.slice(1)
+                } — $${Number(value).toFixed(2)}`}
+                secondary={new Date(created_at).toLocaleString()}
+              />
+            </ListItem>
+          ))}
+        </List>
+      </Box>
     </Box>
   );
 };
