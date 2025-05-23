@@ -15,8 +15,5 @@ export const logHTTPError = (error) => {
     console.error('Error', error.message);
     msg = error.message;
   }
-  return {
-    data: msg,
-    status: false,
-  };
+  throw Error(msg)
 };
