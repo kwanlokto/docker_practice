@@ -33,3 +33,25 @@ def create_account():
         message="Added new account to db",
         statusCode=200,
     )
+
+
+@custom_route("/account/<string:account_id>", methods=["DELETE"])
+@require_token
+def delete_account(account_id):
+    # find the account and ensure it belongs to the current user
+    account = Account.query.filter_by(id=account_id, user_id=request.user.id).first()
+    if not account:
+        return jsonify(
+            isError=True,
+            message="Account not found or not authorized",
+            statusCode=404,
+        )
+
+    db.session.delete(account)
+    db.session.commit()
+
+    return jsonify(
+        isError=False,
+        message="Account deleted successfully",
+        statusCode=200,
+    )

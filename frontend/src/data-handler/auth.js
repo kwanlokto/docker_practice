@@ -56,6 +56,17 @@ export const createNewAccount = async (name) => {
     });
 };
 
+export const deleteAccount = async (account_id) => {
+  return axios
+    .delete(`${API}/account/${account_id}`)
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      logHTTPError(error);
+    });
+};
+
 export const createTransaction = async (account_id, operation, value) => {
   return axios
     .post(`${API}/account/${account_id}/transaction`, {

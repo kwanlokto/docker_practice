@@ -8,7 +8,11 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { createNewAccount, getAllAccounts } from '../data-handler/auth';
+import {
+  createNewAccount,
+  deleteAccount,
+  getAllAccounts,
+} from '../data-handler/auth';
 import { useEffect, useState } from 'react';
 
 import AddIcon from '@material-ui/icons/Add';
@@ -47,10 +51,13 @@ export const Dashboard = () => {
     }
   };
 
-  const removeAccount = (id) => {
-    // If you want to remove locally only:
-    setAccounts((prev) => prev.filter((acc) => acc.id !== id));
-    // Or add API call here
+  const removeAccount = (accountId) => {
+    try {
+      deleteAccount(accountId);
+      setAccounts((prev) => prev.filter((acc) => acc.id !== accountId));
+    } catch (error) {
+      console.error('Failed to delete account', error);
+    }
   };
 
   return (
@@ -65,9 +72,16 @@ export const Dashboard = () => {
         <Grid container spacing={2}>
           {accounts.map(({ id, name, balance }) => (
             <Grid item xs={12} sm={6} md={4} key={id}>
-              <Card onClick={() => history.push(`/account/${id}`)} sx={{ cursor: 'pointer' }}>
+              <Card
+                onClick={() => history.push(`/account/${id}`)}
+                sx={{ cursor: 'pointer' }}
+              >
                 <CardContent>
-                  <Box display="flex" justifyContent="space-between" alignItems="center">
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
                     <Typography variant="h6">{name}</Typography>
                     <IconButton
                       onClick={(e) => {
@@ -80,7 +94,9 @@ export const Dashboard = () => {
                       <DeleteIcon color="error" />
                     </IconButton>
                   </Box>
-                  <Typography color="textSecondary">Balance: ${balance}</Typography>
+                  <Typography color="textSecondary">
+                    Balance: ${balance}
+                  </Typography>
                 </CardContent>
               </Card>
             </Grid>
