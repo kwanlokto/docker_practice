@@ -70,7 +70,7 @@ def create_transaction(account_id):
                         "message": "Transaction completed",
                         "statusCode": 200,
                     }
-                ), 200
+                )
 
             except OperationalError as e:
                 if "deadlock detected" in str(e).lower() and attempt < MAX_RETRIES - 1:
