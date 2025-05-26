@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { logHTTPError } from './logger.js';
 
 const API = 'http://localhost:5000';
 
@@ -10,9 +9,6 @@ export const userLogin = async (email, password) => {
     .then((res) => {
       return res;
     })
-    .catch((error) => {
-      logHTTPError(error);
-    });
 };
 
 export const userSignup = async (email, password, firstName, lastName) => {
@@ -26,9 +22,6 @@ export const userSignup = async (email, password, firstName, lastName) => {
     .then((res) => {
       return res;
     })
-    .catch((error) => {
-      logHTTPError(error);
-    });
 };
 
 /* Functions for Accounts */
@@ -38,9 +31,7 @@ export const getAllAccounts = async () => {
     .then((res) => {
       return res;
     })
-    .catch((error) => {
-      logHTTPError(error);
-    });
+
 };
 
 export const createNewAccount = async (name) => {
@@ -51,9 +42,6 @@ export const createNewAccount = async (name) => {
     .then((res) => {
       return res;
     })
-    .catch((error) => {
-      logHTTPError(error);
-    });
 };
 
 export const deleteAccount = async (account_id) => {
@@ -62,9 +50,6 @@ export const deleteAccount = async (account_id) => {
     .then((res) => {
       return res;
     })
-    .catch((error) => {
-      logHTTPError(error);
-    });
 };
 
 export const createTransaction = async (account_id, operation, value) => {
@@ -76,9 +61,6 @@ export const createTransaction = async (account_id, operation, value) => {
     .then((res) => {
       return res;
     })
-    .catch((error) => {
-      logHTTPError(error);
-    });
 }
 
 
@@ -88,7 +70,4 @@ export const getAllTransactions = async (account_id) => {
     .then((res) => {
       return res;
     })
-    .catch((error) => {
-      logHTTPError(error);
-    });
 }
