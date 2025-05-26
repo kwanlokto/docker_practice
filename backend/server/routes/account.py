@@ -30,6 +30,7 @@ def create_account():
 
     return jsonify(
         isError=False,
+        data=new_account.as_dict(),
         message="Added new account to db",
         statusCode=200,
     )

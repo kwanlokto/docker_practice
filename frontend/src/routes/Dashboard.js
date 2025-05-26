@@ -44,7 +44,7 @@ export const Dashboard = () => {
     if (!newAccountName.trim()) return;
     try {
       const res = await createNewAccount(newAccountName);
-      setAccounts((prev) => [...prev, res.data]);
+      setAccounts((prev) => [...prev, res.data.data]);
       setNewAccountName('');
     } catch (error) {
       console.error('Failed to create account', error);
