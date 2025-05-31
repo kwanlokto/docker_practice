@@ -3,6 +3,7 @@ from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm.exc import NoResultFound
 import time
 import random
+from server.exceptions.db import DBException
 from decimal import Decimal
 from server.models import db
 from server.models.account import Account
@@ -64,13 +65,6 @@ def create_transaction(account_id):
                     db.session.add(new_transaction)
 
                 db.session.commit()
-                return jsonify(
-                    {
-                        "isError": False,
-                        "message": "Transaction completed",
-                        "statusCode": 200,
-                    }
-                )
 
             except OperationalError as e:
                 if "deadlock detected" in str(e).lower() and attempt < MAX_RETRIES - 1:
@@ -81,29 +75,19 @@ def create_transaction(account_id):
                     raise
 
     except KeyError:
-        return jsonify(
-            {
-                "isError": True,
-                "message": "Missing required field",
-                "statusCode": 400,
-            }
-        )
+        raise Exception("Missing required field")
 
     except NoResultFound:
-        return jsonify(
-            {
-                "isError": True,
-                "message": "Account not found",
-                "statusCode": 404,
-            }
-        )
+        raise DBException("Account not found")
+
 
     except Exception as err:
         db.session.rollback()
-        return jsonify(
-            {
-                "isError": True,
-                "message": f"Transaction failed: {str(err)}",
-                "statusCode": 500,
-            }
-        )
+        raise DBException(f"Transaction failed: {str(err)}")
+
+    return jsonify(
+        {
+            "message": "Transaction completed",
+            "statusCode": 200,
+        }
+    )
