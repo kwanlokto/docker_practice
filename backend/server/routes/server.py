@@ -1,12 +1,14 @@
 from functools import wraps
+import traceback
 
 from definitions import POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_SERVER, POSTGRES_PORT, POSTGRES_DB, JWT_SECRET
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_migrate import Migrate
+from server.exceptions.base import BaseException
 from server.models.user import User
 from server.models import db
-from datetime import timedelta
+from datetime import timedelta, datetime
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 
 # Flask web server definition
@@ -46,9 +48,19 @@ def custom_route(rule, **options):
             try:
                 resp_body = function_reference(*args, **kwargs)
                 status_code = 200
+            except BaseException as err:
+                status_code = err.status_code
+                # TOKEN / OTHER SPECIFIC ERRORS
+                resp_body = jsonify(message=f"{err.message} (error code: {status_code})")
             except Exception as err:
-                resp_body = jsonify(message=str(err))
+                resp_body = jsonify(message="Internal server error.")
                 status_code = 500
+                print(
+                    f"Time: {datetime.now().strftime('%H:%M:%S')}\n"
+                    f"Function: {str(function_reference.__name__)}\n"
+                    f"{type(err).__name__}: {str(err)}\n"
+                    f"Message: {traceback.format_exc()}\n"
+                )
 
             return (resp_body, status_code)
 
