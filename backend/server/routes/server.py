@@ -5,7 +5,7 @@ from definitions import POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_SERVER, POSTG
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_migrate import Migrate
-from server.exceptions.base import BaseException
+from server.exceptions.base import InternalException
 from server.models.user import User
 from server.models import db
 from datetime import timedelta, datetime
@@ -27,7 +27,7 @@ webserver.config["JWT_SECRET_KEY"] = JWT_SECRET  # Change this to a more secure 
 webserver.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)  # Set expiration time for access token
 
 jwt = JWTManager(webserver)
-
+ 
 @jwt.expired_token_loader
 def expired_token_callback(jwt_header, jwt_payload):
     return jsonify({
@@ -48,7 +48,7 @@ def custom_route(rule, **options):
             try:
                 resp_body = function_reference(*args, **kwargs)
                 status_code = 200
-            except BaseException as err:
+            except InternalException as err:
                 status_code = err.status_code
                 # TOKEN / OTHER SPECIFIC ERRORS
                 resp_body = jsonify(message=f"{err.message} (error code: {status_code})")

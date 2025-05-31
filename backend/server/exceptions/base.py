@@ -1,4 +1,4 @@
-class BaseException(Exception):
+class InternalException(Exception):
     def __init__(self, message, title=None, status_code=504):
         super().__init__(message)
         self.message = message
