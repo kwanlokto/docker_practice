@@ -4,6 +4,7 @@ from server.models.account import Account
 from server.routes.server import custom_route, require_token
 from server.exceptions.db import DBException
 
+
 @custom_route("/account", methods=["GET"])
 @require_token
 def get_account():

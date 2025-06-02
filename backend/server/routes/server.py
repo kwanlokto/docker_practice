@@ -1,7 +1,14 @@
 from functools import wraps
 import traceback
 
-from definitions import POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_SERVER, POSTGRES_PORT, POSTGRES_DB, JWT_SECRET
+from definitions import (
+    POSTGRES_USER,
+    POSTGRES_PASSWORD,
+    POSTGRES_SERVER,
+    POSTGRES_PORT,
+    POSTGRES_DB,
+    JWT_SECRET,
+)
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_migrate import Migrate
@@ -24,17 +31,20 @@ db.init_app(webserver)
 Migrate(webserver, db)
 
 webserver.config["JWT_SECRET_KEY"] = JWT_SECRET  # Change this to a more secure key
-webserver.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)  # Set expiration time for access token
+webserver.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(
+    hours=1
+)  # Set expiration time for access token
 
 jwt = JWTManager(webserver)
- 
+
+
 @jwt.expired_token_loader
 def expired_token_callback(jwt_header, jwt_payload):
-    return jsonify({
-        'message': 'Token has expired',
-        'statusCode': 401,
-        'isError': True
-    }), 401
+    return (
+        jsonify({"message": "Token has expired", "statusCode": 401, "isError": True}),
+        401,
+    )
+
 
 def custom_route(rule, **options):
     """
@@ -51,7 +61,9 @@ def custom_route(rule, **options):
             except InternalException as err:
                 status_code = err.status_code
                 # TOKEN / OTHER SPECIFIC ERRORS
-                resp_body = jsonify(message=f"{err.message} (error code: {status_code})")
+                resp_body = jsonify(
+                    message=f"{err.message} (error code: {status_code})"
+                )
             except Exception as err:
                 resp_body = jsonify(message="Internal server error.")
                 status_code = 500
@@ -68,6 +80,7 @@ def custom_route(rule, **options):
 
     return decorator
 
+
 def require_token(f):
     @jwt_required()
     @wraps(f)
@@ -83,4 +96,5 @@ def require_token(f):
 
         request.user = user  # attach user info to the request for downstream use
         return f(*args, **kwargs)
+
     return decorated_function

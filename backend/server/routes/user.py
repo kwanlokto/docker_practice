@@ -47,20 +47,19 @@ def user_login():
 
         # Create session using ORM
         token = create_access_token(identity=user.id)
-        user.access_token = token  # Store token in DB if needed for revocation/validation
+        user.access_token = (
+            token  # Store token in DB if needed for revocation/validation
+        )
         db.session.commit()
     except KeyError as err:
         msg = f"Missing required field: {err}"
         raise Exception(msg)
     except Exception as err:
-        raise DBException(err) 
+        raise DBException(err)
 
     return jsonify(
         isError=False,
         message="Login successful",
         statusCode=200,
-        data={
-            "user": user.as_dict(),
-            "token": token
-        }
+        data={"user": user.as_dict(), "token": token},
     )

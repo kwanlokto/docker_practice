@@ -22,8 +22,7 @@ RETRY_DELAY_RANGE = (0.1, 0.5)
 @require_token
 def get_transactions(account_id):
     transactions = (
-        Transaction.query
-        .join(Account)
+        Transaction.query.join(Account)
         .filter(Account.id == account_id, Account.user_id == request.user.id)
         .all()
     )
@@ -79,7 +78,6 @@ def create_transaction(account_id):
 
     except NoResultFound:
         raise DBException("Account not found")
-
 
     except Exception as err:
         db.session.rollback()

@@ -5,6 +5,7 @@ Revises:
 Create Date: 2021-04-16 16:55:53.587323
 
 """
+
 from alembic import op
 import sqlalchemy as sa
 
@@ -39,7 +40,9 @@ def upgrade():
     op.create_table(
         "transaction",
         sa.Column("id", sa.Integer, primary_key=True),
-        sa.Column("account_id", sa.Integer, sa.ForeignKey("account.id"), nullable=False),
+        sa.Column(
+            "account_id", sa.Integer, sa.ForeignKey("account.id"), nullable=False
+        ),
         sa.Column("operation", sa.String(255), nullable=False),
         sa.Column("value", sa.Numeric, nullable=False),
     )

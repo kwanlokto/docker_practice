@@ -1,6 +1,12 @@
 from logging.config import fileConfig
 
-from definitions import POSTGRES_SERVER, POSTGRES_DB, POSTGRES_PASSWORD, POSTGRES_PORT, POSTGRES_USER
+from definitions import (
+    POSTGRES_SERVER,
+    POSTGRES_DB,
+    POSTGRES_PASSWORD,
+    POSTGRES_PORT,
+    POSTGRES_USER,
+)
 from sqlalchemy import engine_from_config, pool
 
 from alembic import context
