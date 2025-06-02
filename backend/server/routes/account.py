@@ -2,7 +2,7 @@ from flask import jsonify, request
 from server.models import db
 from server.models.account import Account
 from server.routes.server import custom_route, require_token
-
+from server.exceptions.db import DBException
 
 @custom_route("/account", methods=["GET"])
 @require_token
@@ -42,11 +42,7 @@ def delete_account(account_id):
     # find the account and ensure it belongs to the current user
     account = Account.query.filter_by(id=account_id, user_id=request.user.id).first()
     if not account:
-        return jsonify(
-            isError=True,
-            message="Account not found or not authorized",
-            statusCode=404,
-        )
+        raise DBException("Account not found or not authorized")
 
     db.session.delete(account)
     db.session.commit()
