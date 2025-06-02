@@ -1,5 +1,6 @@
 from flask import jsonify, request
 from server.models import db
+from server.exceptions.db import DBException
 from server.models.user import User
 from server.routes.server import custom_route
 from flask_jwt_extended import create_access_token
@@ -22,18 +23,10 @@ def user_signup():
         db.session.add(new_user)
         db.session.commit()
     except KeyError as err:
-        msg = f"Failed to create user. ${err}"
-        return jsonify(
-            isError=True,
-            message=msg,
-            statusCode=400,
-        )
+        msg = f"Missing required field: {err}"
+        raise Exception(msg)
     except Exception as err:
-        return jsonify(
-            isError=True,
-            message=str(err),
-            statusCode=409,
-        )
+        raise DBException(err)
 
     return jsonify(
         isError=False,
@@ -56,20 +49,18 @@ def user_login():
         token = create_access_token(identity=user.id)
         user.access_token = token  # Store token in DB if needed for revocation/validation
         db.session.commit()
-
-        return jsonify(
-            isError=False,
-            message="Login successful",
-            statusCode=200,
-            data={
-                "user": user.as_dict(),
-                "token": token
-            }
-        )
-
     except KeyError as err:
         msg = f"Missing required field: {err}"
-        return jsonify(isError=True, message=msg, statusCode=400)
-
+        raise Exception(msg)
     except Exception as err:
-        return jsonify(isError=True, message=str(err), statusCode=401)
+        raise DBException(err) 
+
+    return jsonify(
+        isError=False,
+        message="Login successful",
+        statusCode=200,
+        data={
+            "user": user.as_dict(),
+            "token": token
+        }
+    )
