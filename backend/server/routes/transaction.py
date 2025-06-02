@@ -30,7 +30,6 @@ def get_transactions(account_id):
     return jsonify(
         isError=False,
         message="Success",
-        statusCode=200,
         data=[transaction.as_dict() for transaction in transactions],
     )
 
@@ -84,9 +83,4 @@ def create_transaction(account_id):
         db.session.rollback()
         raise DBException(f"Transaction failed: {str(err)}")
 
-    return jsonify(
-        {
-            "message": "Transaction completed",
-            "statusCode": 200,
-        }
-    )
+    return jsonify(message="Transaction completed")

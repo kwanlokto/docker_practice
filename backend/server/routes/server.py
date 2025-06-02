@@ -41,10 +41,7 @@ jwt = JWTManager(webserver)
 
 @jwt.expired_token_loader
 def expired_token_callback(jwt_header, jwt_payload):
-    return (
-        jsonify({"message": "Token has expired", "statusCode": 401, "isError": True}),
-        401,
-    )
+    return (jsonify(message="Token has expired"), 401)
 
 
 def custom_route(rule, **options):

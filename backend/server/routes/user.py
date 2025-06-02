@@ -30,9 +30,7 @@ def user_signup():
         raise DBException(err)
 
     return jsonify(
-        isError=False,
         message="Added new user to db",
-        statusCode=200,
     )
 
 
@@ -59,8 +57,6 @@ def user_login():
         raise DBException(err)
 
     return jsonify(
-        isError=False,
         message="Login successful",
-        statusCode=200,
         data={"user": user.as_dict(), "token": token},
     )

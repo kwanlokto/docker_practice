@@ -15,7 +15,6 @@ def get_account():
     return jsonify(
         isError=False,
         message="Success",
-        statusCode=200,
         data=[account.as_dict() for account in accounts],
     )
 
@@ -34,7 +33,6 @@ def create_account():
         isError=False,
         data=new_account.as_dict(),
         message="Added new account to db",
-        statusCode=200,
     )
 
 
@@ -52,5 +50,4 @@ def delete_account(account_id):
     return jsonify(
         isError=False,
         message="Account deleted successfully",
-        statusCode=200,
     )
