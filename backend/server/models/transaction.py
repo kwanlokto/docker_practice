@@ -1,5 +1,6 @@
-from server.models import db
 import datetime
+
+from server.models import db
 
 
 class Transaction(db.Model):

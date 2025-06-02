@@ -1,6 +1,5 @@
-from server.routes.server import webserver
 from definitions import APP_ENV
-
+from server.routes.server import webserver
 
 if __name__ == "__main__":
     webserver.run(

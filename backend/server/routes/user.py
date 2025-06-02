@@ -1,9 +1,10 @@
 from flask import jsonify, request
-from server.models import db
+from flask_jwt_extended import create_access_token
+
 from server.exceptions.db import DBException
+from server.models import db
 from server.models.user import User
 from server.routes.server import custom_route
-from flask_jwt_extended import create_access_token
 
 
 @custom_route("/user/signup", methods=["POST"])

@@ -1,8 +1,9 @@
 from flask import jsonify, request
+
+from server.exceptions.db import DBException
 from server.models import db
 from server.models.account import Account
 from server.routes.server import custom_route, require_token
-from server.exceptions.db import DBException
 
 
 @custom_route("/account", methods=["GET"])

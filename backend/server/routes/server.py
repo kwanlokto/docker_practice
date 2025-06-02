@@ -1,22 +1,17 @@
-from functools import wraps
 import traceback
+from datetime import datetime, timedelta
+from functools import wraps
 
-from definitions import (
-    POSTGRES_USER,
-    POSTGRES_PASSWORD,
-    POSTGRES_SERVER,
-    POSTGRES_PORT,
-    POSTGRES_DB,
-    JWT_SECRET,
-)
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager, get_jwt_identity, jwt_required
 from flask_migrate import Migrate
+
+from definitions import (JWT_SECRET, POSTGRES_DB, POSTGRES_PASSWORD,
+                         POSTGRES_PORT, POSTGRES_SERVER, POSTGRES_USER)
 from server.exceptions.base import InternalException
-from server.models.user import User
 from server.models import db
-from datetime import timedelta, datetime
-from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
+from server.models.user import User
 
 # Flask web server definition
 webserver = Flask(__name__)

@@ -1,15 +1,16 @@
+import random
+import time
+from decimal import Decimal
+
 from flask import jsonify, request
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm.exc import NoResultFound
-import time
-import random
+
 from server.exceptions.db import DBException
-from decimal import Decimal
 from server.models import db
 from server.models.account import Account
 from server.models.transaction import Transaction
 from server.routes.server import custom_route, require_token
-
 
 MAX_RETRIES = 3
 RETRY_DELAY_RANGE = (0.1, 0.5)
