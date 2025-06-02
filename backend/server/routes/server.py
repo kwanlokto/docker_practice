@@ -16,6 +16,7 @@ from definitions import (
     POSTGRES_USER,
 )
 from server.exceptions.base import InternalException
+from server.exceptions.db import DBException
 from server.models import db
 from server.models.user import User
 
@@ -61,6 +62,11 @@ def custom_route(rule, **options):
                 # TOKEN / OTHER SPECIFIC ERRORS
                 resp_body = jsonify(
                     message=f"{err.message} (error code: {status_code})"
+                )
+            except DBException as err:
+                status_code = err.status_code
+                resp_body = jsonify(
+                    message=f"DB Error: {err.message} (error code: {status_code})"
                 )
             except Exception as err:
                 resp_body = jsonify(message="Internal server error.")
