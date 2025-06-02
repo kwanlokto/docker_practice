@@ -7,8 +7,14 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager, get_jwt_identity, jwt_required
 from flask_migrate import Migrate
 
-from definitions import (JWT_SECRET, POSTGRES_DB, POSTGRES_PASSWORD,
-                         POSTGRES_PORT, POSTGRES_SERVER, POSTGRES_USER)
+from definitions import (
+    JWT_SECRET,
+    POSTGRES_DB,
+    POSTGRES_PASSWORD,
+    POSTGRES_PORT,
+    POSTGRES_SERVER,
+    POSTGRES_USER,
+)
 from server.exceptions.base import InternalException
 from server.models import db
 from server.models.user import User
