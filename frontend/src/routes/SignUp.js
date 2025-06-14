@@ -13,7 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
-import { userSignup } from "../data-handler/auth"
+import { userSignup } from '../data-handler/auth';
 import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,19 +40,19 @@ export const SignUp = () => {
   const classes = useStyles();
   const history = useHistory();
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
 
   const signUp = async () => {
-    const res = userSignup(email, password, firstName, lastName)
+    const res = userSignup(email, password, firstName, lastName);
     if (res.success) {
-      localStorage.setItem("user.token", res.data.id)
+      localStorage.setItem('user.token', res.data.id);
     }
     // ✅ Redirect to a protected route
-      history.push('/');
-  }
+    history.push('/');
+  };
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -75,7 +75,7 @@ export const SignUp = () => {
                 id="firstName"
                 label="First Name"
                 value={firstName}
-                onChange={e => setFirstName(e.target.value)}
+                onChange={(e) => setFirstName(e.target.value)}
                 autoFocus
               />
             </Grid>
@@ -89,7 +89,7 @@ export const SignUp = () => {
                 name="lastName"
                 autoComplete="lname"
                 value={lastName}
-                onChange={e => setLastName(e.target.value)}
+                onChange={(e) => setLastName(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -102,7 +102,7 @@ export const SignUp = () => {
                 name="email"
                 autoComplete="email"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
                 variant="outlined"
@@ -115,7 +115,7 @@ export const SignUp = () => {
                 autoFocus
                 value={password}
                 type="password"
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
