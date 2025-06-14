@@ -53,9 +53,7 @@ export const handle_axios_exception = (error) => {
  */
 export const axios_get = (path, query_parameters = {}) => {
   return axios
-    .get(address + path + parse_query_parameters(query_parameters), {
-      headers: { "ss-gateway": localStorage.getItem("token") || "" },
-    })
+    .get(address + path + parse_query_parameters(query_parameters))
     .catch(handle_axios_exception)
 }
 
@@ -64,9 +62,7 @@ export const axios_get = (path, query_parameters = {}) => {
  */
 export const axios_patch = (path, patch_body = {}, query_parameters = {}) => {
   return axios
-    .patch(address + path + parse_query_parameters(query_parameters), patch_body, {
-      headers: { "ss-gateway": localStorage.getItem("token") || "" },
-    })
+    .patch(address + path + parse_query_parameters(query_parameters), patch_body)
     .catch(handle_axios_exception)
 }
 
@@ -75,9 +71,7 @@ export const axios_patch = (path, patch_body = {}, query_parameters = {}) => {
  */
 export const axios_post = (path, post_body = {}, query_parameters = {}) => {
   return axios
-    .post(address + path + parse_query_parameters(query_parameters), post_body, {
-      headers: { "ss-gateway": localStorage.getItem("token") || "" },
-    })
+    .post(address + path + parse_query_parameters(query_parameters), post_body)
     .catch(handle_axios_exception)
 }
 
@@ -86,9 +80,7 @@ export const axios_post = (path, post_body = {}, query_parameters = {}) => {
  */
 export const axios_put = (path, put_body = {}, query_parameters = {}) => {
   return axios
-    .put(address + path + parse_query_parameters(query_parameters), put_body, {
-      headers: { "ss-gateway": localStorage.getItem("token") || "" },
-    })
+    .put(address + path + parse_query_parameters(query_parameters), put_body)
     .catch(handle_axios_exception)
 }
 
@@ -97,8 +89,6 @@ export const axios_put = (path, put_body = {}, query_parameters = {}) => {
  */
 export const axios_delete = (path, query_parameters = {}) => {
   return axios
-    .delete(address + path + parse_query_parameters(query_parameters), {
-      headers: { "ss-gateway": localStorage.getItem("token") || "" },
-    })
+    .delete(address + path + parse_query_parameters(query_parameters))
     .catch(handle_axios_exception)
 }
