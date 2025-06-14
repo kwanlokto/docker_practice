@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useHistory } from 'react-router-dom';
+import { LogoutButton } from '../component/logout_button';
 
 export const Dashboard = () => {
   const history = useHistory();
@@ -121,6 +122,7 @@ export const Dashboard = () => {
           Create Account
         </Button>
       </Box>
+      <LogoutButton />
     </Box>
   );
 };
