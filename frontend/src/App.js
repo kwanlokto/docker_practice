@@ -9,6 +9,7 @@ import axios from 'axios';
 
 const apiUrl = 'http://localhost:5000'; // TODO: use process env
 
+// Adds user.token to the request header
 axios.interceptors.request.use(
   (config) => {
     const { origin } = new URL(config.url);
