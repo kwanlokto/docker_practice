@@ -8,7 +8,6 @@ from server.routes.user import *
 
 @custom_route("/ping", methods=["GET"])
 def ping():
-    print("EHLLOO ENTERED!", flush=True)
     return jsonify(
         isError=False,
         message="Success",
