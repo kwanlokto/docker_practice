@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { axios_delete, axios_get, axios_post } from './base';
 
 const API = 'http://localhost:5000';
