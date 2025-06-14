@@ -23,6 +23,13 @@ def user_signup():
         new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
+
+        # Create session using ORM
+        token = create_access_token(identity=new_user.id)
+        new_user.access_token = (
+            token  # Store token in DB if needed for revocation/validation
+        )
+        db.session.commit()
     except KeyError as err:
         msg = f"Missing required field: {err}"
         raise Exception(msg)
@@ -31,6 +38,7 @@ def user_signup():
 
     return jsonify(
         message="Added new user to db",
+        data={"user": new_user.as_dict(), "token": token}
     )
 
 

@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
 import { userSignup } from "../data-handler/auth"
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const SignUp = () => {
   const classes = useStyles();
+  const history = useHistory();
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -48,6 +50,8 @@ export const SignUp = () => {
     if (res.success) {
       localStorage.setItem("user.token", res.data.id)
     }
+    // ✅ Redirect to a protected route
+      history.push('/');
   }
   return (
     <Container component="main" maxWidth="xs">

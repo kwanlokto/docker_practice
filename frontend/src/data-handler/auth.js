@@ -1,7 +1,5 @@
 import { axios_delete, axios_get, axios_post } from './base';
 
-const API = 'http://localhost:5000';
-
 /* Functions for User */
 export const userLogin = async (email, password) => {
   return axios_post('/user/login', { email, password });
