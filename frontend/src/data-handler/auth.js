@@ -4,11 +4,11 @@ const API = 'http://localhost:5000';
 
 /* Functions for User */
 export const userLogin = async (email, password) => {
-  return axios_post(`${API}/user/login`, { email, password });
+  return axios_post('/user/login', { email, password });
 };
 
 export const userSignup = async (email, password, firstName, lastName) => {
-  return axios_post(`${API}/user/signup`, {
+  return axios_post('/user/signup', {
     first_name: firstName,
     last_name: lastName,
     email: email,
@@ -18,26 +18,26 @@ export const userSignup = async (email, password, firstName, lastName) => {
 
 /* Functions for Accounts */
 export const getAllAccounts = async () => {
-  return axios_get(`${API}/account`);
+  return axios_get('/account');
 };
 
 export const createNewAccount = async (name) => {
-  return axios_post(`${API}/account`, {
+  return axios_post('/account', {
     name: name,
   });
 };
 
 export const deleteAccount = async (account_id) => {
-  return axios_delete(`${API}/account/${account_id}`);
+  return axios_delete(`/account/${account_id}`);
 };
 
 export const createTransaction = async (account_id, operation, value) => {
-  return axios_post(`${API}/account/${account_id}/transaction`, {
+  return axios_post(`/account/${account_id}/transaction`, {
     operation: operation,
     value: value,
   });
 };
 
 export const getAllTransactions = async (account_id) => {
-  return axios_get(`${API}/account/${account_id}/transaction`);
+  return axios_get(`/account/${account_id}/transaction`);
 };
