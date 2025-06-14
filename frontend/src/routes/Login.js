@@ -42,7 +42,6 @@ export const Login = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,7 +55,6 @@ export const Login = () => {
       history.push('/');
     } catch (err) {
       console.error(err);
-      setError('Invalid credentials');
     }
   };
 
