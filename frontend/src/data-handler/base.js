@@ -51,7 +51,7 @@ export const handle_axios_exception = (error) => {
 /**
  * Makes a GET request to the backend
  */
-export const axios_get = (path, query_parameters = {}) => {
+export const axios_get = async (path, query_parameters = {}) => {
   return axios
     .get(address + path + parse_query_parameters(query_parameters))
     .catch(handle_axios_exception)
@@ -60,7 +60,7 @@ export const axios_get = (path, query_parameters = {}) => {
 /**
  * Makes a PATCH request to the backend
  */
-export const axios_patch = (path, patch_body = {}, query_parameters = {}) => {
+export const axios_patch = async (path, patch_body = {}, query_parameters = {}) => {
   return axios
     .patch(address + path + parse_query_parameters(query_parameters), patch_body)
     .catch(handle_axios_exception)
@@ -69,7 +69,7 @@ export const axios_patch = (path, patch_body = {}, query_parameters = {}) => {
 /**
  * Makes a POST request to the backend
  */
-export const axios_post = (path, post_body = {}, query_parameters = {}) => {
+export const axios_post = async (path, post_body = {}, query_parameters = {}) => {
   return axios
     .post(address + path + parse_query_parameters(query_parameters), post_body)
     .catch(handle_axios_exception)
@@ -78,7 +78,7 @@ export const axios_post = (path, post_body = {}, query_parameters = {}) => {
 /**
  * Makes a PUT request to the backend
  */
-export const axios_put = (path, put_body = {}, query_parameters = {}) => {
+export const axios_put = async (path, put_body = {}, query_parameters = {}) => {
   return axios
     .put(address + path + parse_query_parameters(query_parameters), put_body)
     .catch(handle_axios_exception)
@@ -87,7 +87,7 @@ export const axios_put = (path, put_body = {}, query_parameters = {}) => {
 /**
  * Makes a DELETE request to the backend
  */
-export const axios_delete = (path, query_parameters = {}) => {
+export const axios_delete = async (path, query_parameters = {}) => {
   return axios
     .delete(address + path + parse_query_parameters(query_parameters))
     .catch(handle_axios_exception)
