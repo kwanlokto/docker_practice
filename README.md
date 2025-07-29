@@ -1,30 +1,49 @@
-🚀 Getting Started – Banking App
-🐳 Prerequisites
-Docker installed on your machine
+# 🚀 Getting Started – Banking App
 
-⚙️ Setup Instructions
-Create Docker volume for PostgreSQL:
+## 🐳 Prerequisites
 
+- [Docker](https://docs.docker.com/get-docker/) must be installed on your machine.
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1. Create a Docker volume for PostgreSQL
+
+```bash
 docker volume create postgres_db
+```
 
-Build the Docker containers:
+### 2. Build the Docker containers:
+```bash
 docker compose build
+```
 
-Start the services in detached mode:
+### 3. Start the services in detached mode:
+```bash
 docker compose up -d
+```
 
-💻 Running the Frontend
-The frontend is hosted at:
-http://localhost:5000
+## 💻 Running the Frontend
 
-To run the app manually:
+Once the app is running, the frontend will be available at:
 
+➡️ [http://localhost:5000](http://localhost:5000)
+
+To run the app manually (outside of Docker), use:
+
+```bash
 python app.py runserver
+```
 
-🛠️ Database Migrations
+## 🛠️ Database Migrations
 Downgrade database by a specific number of revisions:
 
+```bash
 alembic downgrade -x <number_of_revisions>
+```
 
 Upgrade database to the latest (head) revision:
+```bash
 alembic upgrade head
+```
