@@ -1,6 +1,6 @@
 FROM python:3.7
 
-WORKDIR /app/backend
+WORKDIR /app
 
 # Copy pre-made requirements.txt
 COPY requirements.txt ./
