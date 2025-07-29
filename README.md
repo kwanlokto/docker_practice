@@ -28,7 +28,7 @@ docker compose up -d
 
 Once the app is running, the frontend will be available at:
 
-➡️ [http://localhost:5000](http://localhost:5000)
+➡️ [http://localhost:3000](http://localhost:3000)
 
 To run the app manually (outside of Docker), use:
 
