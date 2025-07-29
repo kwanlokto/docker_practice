@@ -17,8 +17,9 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    working_dir: /app
     volumes:
-      - .:/app
+      - ./frontend:/app:cached
       - /app/node_modules
     ports:
       - 3000:3000
@@ -26,7 +27,7 @@ services:
       - CHOKIDAR_USEPOLLING=true
     networks:
       - docker_practice
-    command: npm start  # <-- must use dev server for hot reload
+    command: npm start
 
   backend:
     container_name: backend
@@ -34,8 +35,9 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    working_dir: /app
     volumes:
-      - .:/app
+      - ./backend:/app
     ports:
       - 5000:5000
     environment:
