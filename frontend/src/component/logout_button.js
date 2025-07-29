@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import LogoutIcon from '@mui/icons-material/Logout';
+import Button from '@material-ui/core/Button';
+import LogoutIcon from '@material-ui/icons/Close';
 
 export const LogoutButton = () => {
   const history = useHistory();
