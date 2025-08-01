@@ -1,7 +1,32 @@
 import Axios from "axios"
 
 const address = 'http://localhost:5000'
-export const axios = Axios.create()
+export const axios = Axios.create();
+
+// Adds user.token to the request header
+axios.interceptors.request.use(
+  (config) => {
+    try {
+      const requestUrl = new URL(config.url, address); // ensure absolute URL
+      const { origin } = requestUrl;
+      const allowedOrigins = [address];
+      const token = localStorage.getItem('user.token');
+      
+      if (allowedOrigins.includes(origin) && token) {
+        config.headers = {
+          ...config.headers,
+          Authorization: `Bearer ${token}`,
+        };
+      }
+    } catch (e) {
+      // fallback if URL parsing fails
+      console.warn('Could not parse request URL:', config.url);
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
 
 /**
  * Converts an object of query parameters to a valid query string
