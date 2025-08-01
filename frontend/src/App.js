@@ -20,7 +20,10 @@ export default function App() {
 
           {/* Default route */}
           <ProtectedRoute exact path="/" component={Dashboard} />
-          <ProtectedRoute path="/account/:accountId" component={AccountDetail} />
+          <ProtectedRoute
+            path="/account/:accountId"
+            component={AccountDetail}
+          />
         </Switch>
       </div>
     </Router>
