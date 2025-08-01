@@ -30,11 +30,6 @@ Once the app is running, the frontend will be available at:
 
 ➡️ [http://localhost:3000](http://localhost:3000)
 
-To run the app manually (outside of Docker), use:
-
-```bash
-python app.py runserver
-```
 
 ## 🛠️ Database Migrations
 Downgrade database by a specific number of revisions:
