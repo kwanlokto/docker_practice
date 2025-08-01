@@ -75,7 +75,8 @@ def custom_route(rule, **options):
                     f"Time: {datetime.now().strftime('%H:%M:%S')}\n"
                     f"Function: {str(function_reference.__name__)}\n"
                     f"{type(err).__name__}: {str(err)}\n"
-                    f"Message: {traceback.format_exc()}\n"
+                    f"Message: {traceback.format_exc()}\n",
+                    flush=True,
                 )
 
             return (resp_body, status_code)
